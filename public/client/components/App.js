@@ -1,17 +1,44 @@
 import React from 'react';
+var SongList = require('./SongList');
+var PlayerControls = require('./PlayerControls.js')
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      happy: true
+      volume: 50
     }
   }
+
+  //control volume up
+  handleVolumeUpClick () {
+    this.setState={
+      console.log('turn up the beat')
+      console.log('this.state.volume')
+      this.state.volume++
+    }
+  }
+   //control volume down
+  handleVolumeUpClick () {
+    this.setState={
+      console.log('turn down for what')
+      console.log('this.state.volume')
+      this.state.volume--
+    }
+  }
+
+  //need a function for searching?
 
   render() {
     return (
       <div>
         <h1> hello world </h1>
+        <p>Goodbye World</p>
+      </div>
+      //pass down volume handleClick to PlayerControls
+      <PlayerControls />
+      <SongList />
+      <div>
       </div>
     )
   }
