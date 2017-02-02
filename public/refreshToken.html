@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    </head>
+    <body>
+      <h1>DJDJDISCO - Refreshing token through spotify </h1>
+      <form name="refreshToken" method="POST" action="https://accounts.spotify.com/api/token" > 
+        <input type="hidden" name="grant_type" value="authorization_code" />
+        <input class="code" type="hidden" name="code" />
+        <input type="hidden" name="redirect_uri" value="http://localhost:3000/callback" />
+        <input type="hidden" name="client_id" value="0ed3118ffbe840e994830826df162d78" />
+        <input type="hidden" name="client_secret" value="873b59a52cc541a3befd02246f1019a3" />
+        <input type="submit" value="Spotify Authenticate"></input>
+      </form> 
+    </body>
+    <script>
+      // console.log('before ajax', $.ajax);
+ 
+      $.ajax({
+        url: '/refreshToken',
+        type: 'GET',
+        success: function(res) {
+          var code = res[res.count];
+          $('.code').val(code);
+
+          $.ajax({
+            type: 'POST',
+            crossDomain: true,
+            url: 'https://accounts.spotify.com/api/token',
+            contentType:'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+              'grant_type': 'authorization_code',
+              'code': code,
+              'redirect_uri': 'http://localhost:3000/callback',
+              'client_id': '0ed3118ffbe840e994830826df162d78',
+              'client_secret': '873b59a52cc541a3befd02246f1019a3'
+            }),
+            success: function(res) {
+              console.log(res);
+            },
+            error: function(err) {
+              console.log(err);
+            }
+          });
+          // document.refreshToken.submit();
+        },
+        error: function(err) {
+          console.log(err);
+        }
+      });
+      // console.log('after ajax');
+      // document.refreshToken.submit();
+    </script>
+
+  </html>
