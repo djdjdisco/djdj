@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+    </head>
+    <body>
+      <h1>DJDJDISCO - Logging in through spotify </h1>
+        <form name="LOGIN" method="GET" action="https://accounts.spotify.com/authorize" > 
+          <input type="hidden" name="client_id" value="0ed3118ffbe840e994830826df162d78" />
+          <input type="hidden" name="response_type" value="code" />
+          <input type="hidden" name="redirect_uri" value="http://localhost:3000/callback" />
+          <input type="submit" style="display:none" value="Spotify Authenticate"></input>
+        </form> 
+    </body>
+    <script>
+      document.LOGIN.submit();
+    </script>
+
+  </html>
