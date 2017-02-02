@@ -103,6 +103,15 @@ app.get('/callback', function (req, res) {
 
 app.get('/state', function(req, res) {
   res.end(JSON.stringify(data.state++));
+}
+app.set('views', 'public')
+app.set('view engine', 'ejs')
+app.use(express.static('public'));
+
+
+app.get('/callback', function(req, res) {
+  // console.log('inside first callback : ', data);
+  res.sendFile(path.join(__dirname, '../public/refreshToken.html'));  
 });
 
 
@@ -114,3 +123,8 @@ var port = 3000;
 app.listen(port, function () {
   console.log('You are now running on port ' + port + '!');
 })
+
+app.get('/', function (req, res) {
+	console.log('you made it home')
+  res.render('index')
+});
