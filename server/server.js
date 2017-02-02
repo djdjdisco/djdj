@@ -103,7 +103,8 @@ app.get('/callback', function (req, res) {
 
 app.get('/state', function(req, res) {
   res.end(JSON.stringify(data.state++));
-}
+});
+
 app.set('views', 'public')
 app.set('view engine', 'ejs')
 app.use(express.static('public'));

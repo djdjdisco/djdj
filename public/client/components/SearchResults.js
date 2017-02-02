@@ -1,10 +1,17 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import SearchSong from './SearchSong.js'
+
+
 var SearchResults = () => (
 	(
-		<div class="search-group">
-			<h3 class="search-title">Search Results</h3>
-			<ul class='list-group'>
+		<div className="search-group">
+			<h3 className="search-title">Search Results</h3>
+			<ul className='list-group'>
 		 	<SearchSong />
 			</ul>
 		</div>
 	)
 )
+
+module.exports = SearchResults;

@@ -1,9 +1,15 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import SongList from './SongList.js'
+import Search from './Search.js'
+import SearchResults from './SearchResults.js'
+import SearchSong from './SearchSong.js'
 
-var SongList = require('./SongList');
-var PlayerControls = require('./PlayerControls.js')
+
+
 var $ = require('jquery');
 
+  console.log(SongList)
 
 class App extends React.Component {
   constructor(props) {
@@ -34,7 +40,7 @@ class App extends React.Component {
     return (
       <div>
         <SongList />
-        <div>
+        <Search />
       </div>
     )
   }

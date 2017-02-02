@@ -1,3 +1,8 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import SearchResults from './SearchResults';
+import SearchSong from './SearchSong.js'
+
 class Search extends React.Component {
 	//search bar will be blank on default
 // 	constructor(props) {
@@ -16,10 +21,10 @@ class Search extends React.Component {
   //render basic search bar, some bootstrap included
 	render() {
     return (
-      <div class="search-group">
-        <form class="form-inline">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search for music" />
+      <div className="search-group">
+        <form className="form-inline">
+          <div className="form-group">
+            <input type="text" className="form-control" placeholder="Search for music" />
           </div>
             <button className="btn hidden-sm-down">
               <span className="glyphicon glyphicon-search"></span>
@@ -31,3 +36,5 @@ class Search extends React.Component {
     );
   }
 }
+
+module.exports = Search;

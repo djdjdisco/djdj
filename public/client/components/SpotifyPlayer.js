@@ -2,9 +2,9 @@ class SpotifyPlayer extends React.Component {
 
 	render () {
 		return (
-			<div class="header">
+			<div className="header">
 				<div>
-					<a class="navbar-brand" href="#"><img src="#" alt="djdj">
+					<a className="navbar-brand" href="#"><img src="#" alt="djdj">
 				<div>
 				<div>
 					music player goes here
