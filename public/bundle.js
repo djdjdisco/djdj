@@ -21562,15 +21562,15 @@
 
 	var _SongList2 = _interopRequireDefault(_SongList);
 
-	var _Search = __webpack_require__(184);
+	var _Search = __webpack_require__(181);
 
 	var _Search2 = _interopRequireDefault(_Search);
 
-	var _SearchResults = __webpack_require__(185);
+	var _SearchResults = __webpack_require__(182);
 
 	var _SearchResults2 = _interopRequireDefault(_SearchResults);
 
-	var _SearchSong = __webpack_require__(186);
+	var _SearchSong = __webpack_require__(183);
 
 	var _SearchSong2 = _interopRequireDefault(_SearchSong);
 
@@ -21582,7 +21582,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var $ = __webpack_require__(181);
+	var $ = __webpack_require__(184);
 
 	console.log(_SongList2.default);
 
@@ -21646,7 +21646,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _Song = __webpack_require__(183);
+	var _Song = __webpack_require__(180);
 
 	var _Song2 = _interopRequireDefault(_Song);
 
@@ -21677,8 +21677,197 @@
 	module.exports = SongList;
 
 /***/ },
-/* 180 */,
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Song = function Song() {
+		return (
+			//need to inherit song info from parent
+			_react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ'
+				)
+			)
+		);
+	};
+	module.exports = Song;
+
+/***/ },
 /* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _SearchResults = __webpack_require__(182);
+
+	var _SearchResults2 = _interopRequireDefault(_SearchResults);
+
+	var _SearchSong = __webpack_require__(183);
+
+	var _SearchSong2 = _interopRequireDefault(_SearchSong);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Search = function (_React$Component) {
+	  _inherits(Search, _React$Component);
+
+	  function Search() {
+	    _classCallCheck(this, Search);
+
+	    return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).apply(this, arguments));
+	  }
+
+	  _createClass(Search, [{
+	    key: 'render',
+
+	    //search bar will be blank on default
+	    // 	constructor(props) {
+	    // 		super(props)
+	    // 		this.state ={
+	    // 			value : ''
+	    // 		}
+	    // }
+	    // 	//change state of search bar when searching for songs via Spotify API
+	    // 	 handleSearch(e) {
+	    //     this.setState({
+	    //       value: e.target.value
+	    //     });
+	    //   }
+
+	    //render basic search bar, some bootstrap included
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'search-group' },
+	        _react2.default.createElement(
+	          'form',
+	          { className: 'form-inline' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'form-group' },
+	            _react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Search for music' })
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'btn hidden-sm-down' },
+	            _react2.default.createElement('span', { className: 'glyphicon glyphicon-search' })
+	          )
+	        ),
+	        _react2.default.createElement(_SearchResults2.default, null)
+	      );
+	    }
+	  }]);
+
+	  return Search;
+	}(_react2.default.Component);
+
+	module.exports = Search;
+
+/***/ },
+/* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _SearchSong = __webpack_require__(183);
+
+	var _SearchSong2 = _interopRequireDefault(_SearchSong);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var SearchResults = function SearchResults() {
+		return _react2.default.createElement(
+			'div',
+			{ className: 'search-group' },
+			_react2.default.createElement(
+				'h3',
+				{ className: 'search-title' },
+				'Search Results'
+			),
+			_react2.default.createElement(
+				'ul',
+				{ className: 'list-group' },
+				_react2.default.createElement(_SearchSong2.default, null)
+			)
+		);
+	};
+
+	module.exports = SearchResults;
+
+/***/ },
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var SearchSong = function SearchSong() {
+		//need to inherit song info from parent
+		//two ways of making the song model - as a link and as a button
+		return _react2.default.createElement(
+			'div',
+			null,
+			_react2.default.createElement(
+				'li',
+				{ className: 'list-group-item song' },
+				'Search Result Song'
+			)
+		);
+	};
+
+	module.exports = SearchSong;
+
+/***/ },
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {"use strict";
@@ -31475,10 +31664,10 @@
 
 		return jQuery;
 	});
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(182)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(185)(module)))
 
 /***/ },
-/* 182 */
+/* 185 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -31493,196 +31682,6 @@
 		}
 		return module;
 	};
-
-/***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(32);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Song = function Song() {
-		return (
-			//need to inherit song info from parent
-			_react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'li',
-					{ className: 'list-group-item song' },
-					'Hey Mister DJ'
-				)
-			)
-		);
-	};
-	module.exports = Song;
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(32);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _SearchResults = __webpack_require__(185);
-
-	var _SearchResults2 = _interopRequireDefault(_SearchResults);
-
-	var _SearchSong = __webpack_require__(186);
-
-	var _SearchSong2 = _interopRequireDefault(_SearchSong);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Search = function (_React$Component) {
-	  _inherits(Search, _React$Component);
-
-	  function Search() {
-	    _classCallCheck(this, Search);
-
-	    return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).apply(this, arguments));
-	  }
-
-	  _createClass(Search, [{
-	    key: 'render',
-
-	    //search bar will be blank on default
-	    // 	constructor(props) {
-	    // 		super(props)
-	    // 		this.state ={
-	    // 			value : ''
-	    // 		}
-	    // }
-	    // 	//change state of search bar when searching for songs via Spotify API
-	    // 	 handleSearch(e) {
-	    //     this.setState({
-	    //       value: e.target.value
-	    //     });
-	    //   }
-
-	    //render basic search bar, some bootstrap included
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'search-group' },
-	        _react2.default.createElement(
-	          'form',
-	          { className: 'form-inline' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            _react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Search for music' })
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            { className: 'btn hidden-sm-down' },
-	            _react2.default.createElement('span', { className: 'glyphicon glyphicon-search' })
-	          )
-	        ),
-	        _react2.default.createElement(_SearchResults2.default, null)
-	      );
-	    }
-	  }]);
-
-	  return Search;
-	}(_react2.default.Component);
-
-	module.exports = Search;
-
-/***/ },
-/* 185 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(32);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _SearchSong = __webpack_require__(186);
-
-	var _SearchSong2 = _interopRequireDefault(_SearchSong);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var SearchResults = function SearchResults() {
-		return _react2.default.createElement(
-			'div',
-			{ className: 'search-group' },
-			_react2.default.createElement(
-				'h3',
-				{ className: 'search-title' },
-				'Search Results'
-			),
-			_react2.default.createElement(
-				'ul',
-				{ className: 'list-group' },
-				_react2.default.createElement(_SearchSong2.default, null)
-			)
-		);
-	};
-
-	module.exports = SearchResults;
-
-/***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(32);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var SearchSong = function SearchSong() {
-		//need to inherit song info from parent
-		//two ways of making the song model - as a link and as a button
-		return _react2.default.createElement(
-			'div',
-			null,
-			_react2.default.createElement(
-				'li',
-				{ className: 'list-group-item song' },
-				'Search Result Song'
-			)
-		);
-	};
-
-	module.exports = SearchSong;
 
 /***/ }
 /******/ ]);

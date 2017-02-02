@@ -51,23 +51,29 @@ app.get('/callback', function (req, res) {
         'client_secret': '873b59a52cc541a3befd02246f1019a3'
       }
     })
-    .then(function(response){
-      data[state] = response.data;
+    .then(function(tokenResponse){
+      console.log("123", tokenResponse.data);
+      data[state] = tokenResponse.data;
       data[state]['Content-Type'] = 'application/json';
       data[state]['client_id'] = '0ed3118ffbe840e994830826df162d78';
       data[state]['client_secret'] = '873b59a52cc541a3befd02246f1019a3';
       
       // req.session.cookie = state;
-      console.log('saved successfully', response.data);
+      console.log('saved successfully', tokenResponse.data);
       axios({
         url: 'https://api.spotify.com/v1/me',
         method: 'get',
         params: data[state]
       })
-      .then(function(res) {
-      console.log('@@@@@User info : ', res.data);
-        data[state].data = res.data;
-        var playListUrl = res.data.href + '/playlists';
+      .then(function(userInfoResponse) {  
+        if ( userInfoResponse.data.id === 'djkorean1' ) {
+          data['dj'] = userInfoResponse.data;
+          data['dj']['access_token'] = tokenResponse.data['access_token'];
+          data['dj']['refresh_token'] = tokenResponse.data['refresh_token'];
+        }
+
+        data[state].data = userInfoResponse.data;
+        var playListUrl = userInfoResponse.data.href + '/playlists';
         var params = {
           'access_token': data[state]['access_token'],
           'Content-Type': 'application/json'
@@ -105,9 +111,9 @@ app.get('/state', function(req, res) {
   res.end(JSON.stringify(data.state++));
 });
 
-app.set('views', 'public')
-app.set('view engine', 'ejs')
-app.use(express.static('public'));
+// app.set('views', 'public')
+// app.set('view engine', 'ejs')
+// app.use(express.static('public'));
 
 
 app.get('/callback', function(req, res) {
