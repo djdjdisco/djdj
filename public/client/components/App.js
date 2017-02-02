@@ -10,6 +10,7 @@ class App extends React.Component {
     }
   }
 
+//if we are not using Spotify's music player, we need volume controls...
   //control volume up
   handleVolumeUpClick () {
     this.setState={
