@@ -1,0 +1,31 @@
+/*swatches*/
+/*pink - #C0295B
+dark grey - #515151
+light grey - ##DCDCDC
+black - #010101*/
+
+body {
+	background-color: #010101;
+}
+
+h3 {
+	color: #FEFEFE;
+}
+/*SongList Styles*/
+ul {
+	border: 2px solid #C0295B;
+	list-style: none;
+}
+
+/*Song Styles*/
+li, .song {
+	color:#DCDCDC;
+	background-color: #515151;
+	border:0.5px solid #010101;
+}
+
+/*Search Bar Styles*/
+
+/*Search Results Style*/
+
+/*Search Song Style*/

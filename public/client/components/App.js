@@ -1,55 +1,42 @@
 import React from 'react';
-<<<<<<< HEAD
+// <<<<<<< HEAD
 var SongList = require('./SongList');
 var PlayerControls = require('./PlayerControls.js')
-=======
+// =======
 var $ = require('jquery');
->>>>>>> 64489a4a5d0bfa333788753b98c0e6a5cfee051c
+// >>>>>>> 64489a4a5d0bfa333788753b98c0e6a5cfee051c
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-<<<<<<< HEAD
-      volume: 50
-    }
-=======
-      happy: true,
-      count: 0
     } 
->>>>>>> 64489a4a5d0bfa333788753b98c0e6a5cfee051c
-  }
+// >>>>>>> 64489a4a5d0bfa333788753b98c0e6a5cfee051c
 
 //if we are not using Spotify's music player, we need volume controls...
   //control volume up
-  handleVolumeUpClick () {
-    this.setState={
-      console.log('turn up the beat')
-      console.log('this.state.volume')
-      this.state.volume++
-    }
-  }
-   //control volume down
-  handleVolumeUpClick () {
-    this.setState={
-      console.log('turn down for what')
-      console.log('this.state.volume')
-      this.state.volume--
-    }
-  }
-
+  // handleVolumeUpClick () {
+  //   this.setState={
+  //     console.log('turn up the beat')
+  //     console.log('this.state.volume')
+  //     this.state.volume++
+  //   }
+  // }
+  //  //control volume down
+  // handleVolumeUpClick () {
+  //   this.setState={
+  //     console.log('turn down for what')
+  //     console.log('this.state.volume')
+  //     this.state.volume--
+  //   }
+  // }
+  //
   //need a function for searching?
 
   render() {
     return (
       <div>
-        <h1> hello world </h1>
-        <p>Goodbye World</p>
-      </div>
-      //pass down volume handleClick to PlayerControls
-      <PlayerControls />
-      <SongList />
-      <div>
+        <SongList />
+        <div>
       </div>
     )
   }

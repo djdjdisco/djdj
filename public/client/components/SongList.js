@@ -1,9 +1,11 @@
-var SongList = (/*something goes in here*/) => {
+var SongList = (/*something goes in here*/) => (
 
 //map song list??? how to get songlist from server
-	return (
-	<div class='song-list'>
-	 {'map songs into song list'}
+
+	<div class="playlist-group">
+		<h3 class="playlist-title">Playlist</h3>
+			<ul class='list-group'>
+			 {/*map songs into song list*/}
+			</ul>
 	</div>
-	)
-}
+)

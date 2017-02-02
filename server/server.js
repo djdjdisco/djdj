@@ -26,20 +26,20 @@ app.use('/callback', function (req, res, next) {
   next();
 });
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
 app.set('views', 'public')
 app.set('view engine', 'ejs')
 app.use(express.static('public'));
 
 
-=======
+// =======
 // app.use('/callback', express.static(path.join(__dirname, '../public')));
 
 app.get('/callback', function(req, res) {
   // console.log('inside first callback : ', data);
   res.sendFile(path.join(__dirname, '../public/refreshToken.html'));  
 });
->>>>>>> 64489a4a5d0bfa333788753b98c0e6a5cfee051c
+// >>>>>>> 64489a4a5d0bfa333788753b98c0e6a5cfee051c
 
 app.get('/refreshToken', function(req, res) {
   console.log('Inside refreshToken', data)
