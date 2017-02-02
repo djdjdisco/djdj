@@ -17,39 +17,7 @@
     <script>
       // console.log('before ajax', $.ajax);
  
-      $.ajax({
-        url: '/refreshToken',
-        type: 'GET',
-        success: function(res) {
-          var code = res[res.count];
-          $('.code').val(code);
-
-          $.ajax({
-            type: 'POST',
-            crossDomain: true,
-            url: 'https://accounts.spotify.com/api/token',
-            contentType:'application/json',
-            dataType: 'json',
-            data: JSON.stringify({
-              'grant_type': 'authorization_code',
-              'code': code,
-              'redirect_uri': 'http://localhost:3000/callback',
-              'client_id': '0ed3118ffbe840e994830826df162d78',
-              'client_secret': '873b59a52cc541a3befd02246f1019a3'
-            }),
-            success: function(res) {
-              console.log(res);
-            },
-            error: function(err) {
-              console.log(err);
-            }
-          });
-          // document.refreshToken.submit();
-        },
-        error: function(err) {
-          console.log(err);
-        }
-      });
+   
       // console.log('after ajax');
       // document.refreshToken.submit();
     </script>

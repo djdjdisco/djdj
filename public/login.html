@@ -1,18 +1,32 @@
 <!DOCTYPE html>
   <html>
     <head>
+      <script src="node_modules/jquery/dist/jquery.min.js"></script>
     </head>
     <body>
       <h1>DJDJDISCO - Logging in through spotify </h1>
         <form name="LOGIN" method="GET" action="https://accounts.spotify.com/authorize" > 
+          <input type="hidden" name="scope" value="playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private" />
           <input type="hidden" name="client_id" value="0ed3118ffbe840e994830826df162d78" />
           <input type="hidden" name="response_type" value="code" />
+          <input class="state" type="hidden" name="state" value="nothing" />
           <input type="hidden" name="redirect_uri" value="http://localhost:3000/callback" />
-          <input type="submit" style="display:none" value="Spotify Authenticate"></input>
+          <input type="submit"  value="Spotify Authenticate"></input>
         </form> 
     </body>
     <script>
-      document.LOGIN.submit();
+      $.ajax({
+        url:'/state',
+        method:'GET',
+        success: function(res) {
+          console.log('success : ', res);
+          $('.state').val(res);
+        },
+        error: function(err) {
+          console.log(err);
+        }
+      });
+      // document.LOGIN.submit();
     </script>
 
   </html>

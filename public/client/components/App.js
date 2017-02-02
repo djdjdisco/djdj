@@ -9,7 +9,9 @@ class App extends React.Component {
       count: 0
     } 
   }
+  findUser() {
 
+  }
   render() {
     return (
       <div>
@@ -20,4 +22,6 @@ class App extends React.Component {
 }
 
 export default App;
-// <a href="https://accounts.spotify.com/authorize?client_id=0ed3118ffbe840e994830826df162d78&response_type=code&redirect_uri=http://localhost:3000/callback&state=123">Spotify Authorization</a>
+
+
+// https://api.spotify.com/v1/search?q=I'm%20yours&type=track,artist
