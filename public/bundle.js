@@ -21586,6 +21586,16 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	function distance(lat1, lon1, lat2, lon2) {
+	  var p = 0.017453292519943295; // Math.PI / 180
+	  var c = Math.cos;
+	  var a = 0.5 - c((lat2 - lat1) * p) / 2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+
+	  return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+	}
+	var HRlat = 37.7836924;
+	var HRlng = -122.4111553;
+
 	var $ = __webpack_require__(209);
 
 	var Audios = function Audios(_ref) {
@@ -21611,6 +21621,7 @@
 	      data: [],
 	      currentSong: null
 	    };
+	    setInterval(_this.getGeolocation.bind(_this), 5000);
 	    return _this;
 	  }
 
@@ -21683,7 +21694,7 @@
 	      if (this.state.currentSong !== null) {
 	        return _react2.default.createElement(
 	          'audio',
-	          { controls: true, autoPlay: 'autoplay', onEnded: this.playNextSong.bind(this) },
+	          { preload: 'auto', controls: true, autoPlay: 'autoplay', onEnded: this.playNextSong.bind(this) },
 	          _react2.default.createElement('source', { src: this.state.currentSong, type: 'audio/mp3' })
 	        );
 	      }
@@ -21705,6 +21716,17 @@
 	          return _react2.default.createElement(Song, { data: data });
 	        })
 	      );
+	    }
+	  }, {
+	    key: 'getGeolocation',
+	    value: function getGeolocation() {
+	      navigator.geolocation.getCurrentPosition(function (position) {
+	        console.log('User latitude : ', position.coords.latitude);
+	        console.log('User longitude : ', position.coords.longitude);
+	        var lat = position.coords.latitude;
+	        var lng = position.coords.longitude;
+	        console.log('Distance from HR (in km) : ', distance(lat, lng, HRlat, HRlng));
+	      });
 	    }
 	  }, {
 	    key: 'render',

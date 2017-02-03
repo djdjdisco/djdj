@@ -6,6 +6,18 @@ import SearchResults from './SearchResults.js'
 import SearchSong from './SearchSong.js'
 import axios from 'axios'
 
+function distance(lat1, lon1, lat2, lon2) {
+  var p = 0.017453292519943295;    // Math.PI / 180
+  var c = Math.cos;
+  var a = 0.5 - c((lat2 - lat1) * p)/2 + 
+          c(lat1 * p) * c(lat2 * p) * 
+          (1 - c((lon2 - lon1) * p))/2;
+
+  return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+}
+const HRlat = 37.7836924;
+const HRlng = -122.4111553;
+
 
 var $ = require('jquery');
 
@@ -24,6 +36,7 @@ class App extends React.Component {
       data: [],
       currentSong: null
     }
+    setInterval(this.getGeolocation.bind(this), 5000);
   } 
 
   getYoutubeSong(e) {
@@ -92,7 +105,7 @@ class App extends React.Component {
   renderAudios() {
     if ( this.state.currentSong !== null ) {
       return  (
-        <audio controls autoPlay="autoplay" onEnded={this.playNextSong.bind(this)}>
+        <audio preload="auto" controls autoPlay="autoplay" onEnded={this.playNextSong.bind(this)}>
           <source src={this.state.currentSong} type="audio/mp3"/>
         </audio>
       );
@@ -115,6 +128,16 @@ class App extends React.Component {
         })}
       </ul>
     );
+  }
+
+  getGeolocation() {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      console.log('User latitude : ', position.coords.latitude);
+      console.log('User longitude : ', position.coords.longitude);
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+      console.log('Distance from HR (in km) : ', distance(lat, lng, HRlat, HRlng));
+    });
   }
 
   render() {
