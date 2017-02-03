@@ -21607,24 +21607,14 @@
 
 	    _this.state = {
 	      value: '',
-	      srcs: []
+	      srcs: [],
+	      data: [],
+	      currentSong: null
 	    };
 	    return _this;
 	  }
 
 	  _createClass(App, [{
-	    key: 'addSongDJ',
-	    value: function addSongDJ() {
-	      (0, _axios2.default)({
-	        url: '/addSongDJ',
-	        method: 'post'
-	      }).then(function (res) {
-	        console.log(res);
-	      }).catch(function (err) {
-	        console.log(err);
-	      });
-	    }
-	  }, {
 	    key: 'getYoutubeSong',
 	    value: function getYoutubeSong(e) {
 	      e.preventDefault();
@@ -21638,30 +21628,65 @@
 	          q: this.state.value
 	        }
 	      }).then(function (youtubeResponse) {
+	        console.log('youtube search success!');
 	        var searchResult = youtubeResponse.data.items;
 	        var firstSongId = searchResult[0].id.videoId;
+	        console.log(firstSongId === undefined);
+	        if (!firstSongId) {
+	          return;
+	        }
 	        var firstSongUrl = 'https://www.youtube.com/watch?v=' + firstSongId;
 	        var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + firstSongUrl;
 	        var newSrcs = context.state.srcs;
+	        var newData = context.state.data;
 	        newSrcs.push(directDownloadLink);
+	        newData.push(searchResult[0]);
 	        context.setState({
-	          srcs: newSrcs
+	          srcs: newSrcs,
+	          data: newData
 	        });
-	        console.log('youtube search success', directDownloadLink);
+	        if (context.state.currentSong === null) {
+	          console.log('set directDownloadLink');
+	          context.setState({
+	            currentSong: directDownloadLink
+	          });
+	        };
+	        console.log('new song : ', directDownloadLink);
 	      }).catch(function (err) {
 	        console.log('youtube search fail', err);
 	      });
 	    }
 	  }, {
+	    key: 'playNextSong',
+	    value: function playNextSong() {
+	      var currentSongIndex = this.state.srcs.indexOf(this.state.currentSong);
+	      console.log('currentSong Index : ', currentSongIndex);
+	      console.log('songs index - 1 : ', this.state.srcs.length - 1);
+	      console.log('songs : ', this.state.srcs);
+
+	      this.setState({
+	        currentSong: null
+	      });
+	      if (currentSongIndex < this.state.srcs.length - 1) {
+	        var playNextSong = function () {
+	          this.setState({
+	            currentSong: this.state.srcs[currentSongIndex + 1]
+	          });
+	          console.log('play next song!');
+	        }.bind(this);
+	        setTimeout(playNextSong, 0);
+	      }
+	    }
+	  }, {
 	    key: 'renderAudios',
 	    value: function renderAudios() {
-	      return this.state.srcs.map(function (src, i) {
+	      if (this.state.currentSong !== null) {
 	        return _react2.default.createElement(
 	          'audio',
-	          { controls: true, key: i },
-	          _react2.default.createElement('source', { src: src, type: 'audio/mp3' })
+	          { controls: true, autoPlay: 'autoplay', onEnded: this.playNextSong.bind(this) },
+	          _react2.default.createElement('source', { src: this.state.currentSong, type: 'audio/mp3' })
 	        );
-	      });
+	      }
 	    }
 	  }, {
 	    key: 'handleChange',
@@ -21669,7 +21694,17 @@
 	      this.setState({
 	        value: e.target.value
 	      });
-	      console.log(this.state.value);
+	    }
+	  }, {
+	    key: 'renderPlayList',
+	    value: function renderPlayList(Song) {
+	      return _react2.default.createElement(
+	        'ul',
+	        { className: 'list-group' },
+	        this.state.data.map(function (data) {
+	          return _react2.default.createElement(Song, { data: data });
+	        })
+	      );
 	    }
 	  }, {
 	    key: 'render',
@@ -21677,13 +21712,14 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(Audios, { renderAudios: this.renderAudios.bind(this) }),
 	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: this.getYoutubeSong.bind(this) },
 	          _react2.default.createElement('input', { type: 'text', onChange: this.handleChange.bind(this) }),
 	          _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
-	        )
+	        ),
+	        _react2.default.createElement(Audios, { renderAudios: this.renderAudios.bind(this) }),
+	        _react2.default.createElement(_SongList2.default, { renderPlayList: this.renderPlayList.bind(this) })
 	      );
 	    }
 	  }]);
@@ -21713,25 +21749,17 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SongList = function SongList() {
-		return (/*something goes in here*/
-
-			//map song list??? how to get songlist from server
-
+	var SongList = function SongList(_ref) {
+		var renderPlayList = _ref.renderPlayList;
+		return _react2.default.createElement(
+			'div',
+			{ className: 'playlist-group' },
 			_react2.default.createElement(
-				'div',
-				{ className: 'playlist-group' },
-				_react2.default.createElement(
-					'h3',
-					{ className: 'playlist-title' },
-					'Playlist'
-				),
-				_react2.default.createElement(
-					'ul',
-					{ className: 'list-group' },
-					_react2.default.createElement(_Song2.default, null)
-				)
-			)
+				'h3',
+				{ className: 'playlist-title' },
+				'Playlist'
+			),
+			renderPlayList(_Song2.default)
 		);
 	};
 
@@ -21753,16 +21781,18 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Song = function Song() {
+	var Song = function Song(_ref) {
+		var data = _ref.data;
 		return (
 			//need to inherit song info from parent
 			_react2.default.createElement(
 				'div',
 				null,
+				_react2.default.createElement('img', { src: data.snippet.thumbnails.default.url }),
 				_react2.default.createElement(
 					'li',
 					{ className: 'list-group-item song' },
-					'Hey Mister DJ'
+					data.snippet.title
 				)
 			)
 		);

@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-var Song = () => (
+var Song = ({ data }) => (
 	//need to inherit song info from parent
  (
- 	<div>
-		<li className="list-group-item song">Hey Mister DJ</li>
+ 	<div>    
+    <img src={data.snippet.thumbnails.default.url}/>
+		<li className="list-group-item song">{data.snippet.title}</li>
 	</div>
 	)
 )
