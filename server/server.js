@@ -3,8 +3,15 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var axios = require('axios');
 var session = require('express-session');
+var db = require('../db/index.js');
 
 var app = express();
+
+
+db.Room.sync();
+db.DJ.sync();
+db.User.sync();
+
 
 app.use(session({
   secret: 'djdj',
