@@ -24,6 +24,7 @@ app.use(bodyParser.json())
 app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
 app.use('/static', express.static(path.join(__dirname, '../public')));
 
+
 var data = {
   state: 0
 };

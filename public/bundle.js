@@ -21574,6 +21574,10 @@
 
 	var _SearchSong2 = _interopRequireDefault(_SearchSong);
 
+	var _SpotifyPlayer = __webpack_require__(185);
+
+	var _SpotifyPlayer2 = _interopRequireDefault(_SpotifyPlayer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21582,7 +21586,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var $ = __webpack_require__(184);
+	var $ = __webpack_require__(186);
 
 	console.log(_SongList2.default);
 
@@ -21595,32 +21599,13 @@
 	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 	  }
 
-	  //if we are not using Spotify's music player, we need volume controls...
-	  //control volume up
-	  // handleVolumeUpClick () {
-	  //   this.setState={
-	  //     console.log('turn up the beat')
-	  //     console.log('this.state.volume')
-	  //     this.state.volume++
-	  //   }
-	  // }
-	  //  //control volume down
-	  // handleVolumeUpClick () {
-	  //   this.setState={
-	  //     console.log('turn down for what')
-	  //     console.log('this.state.volume')
-	  //     this.state.volume--
-	  //   }
-	  // }
-	  //
-	  //need a function for searching?
-
 	  _createClass(App, [{
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        _react2.default.createElement(_SpotifyPlayer2.default, null),
 	        _react2.default.createElement(_SongList2.default, null),
 	        _react2.default.createElement(_Search2.default, null)
 	      );
@@ -21701,7 +21686,102 @@
 				_react2.default.createElement(
 					'li',
 					{ className: 'list-group-item song' },
-					'Hey Mister DJ'
+					'Hey Mister DJ 1'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 2'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 3'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 4'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 5'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 6'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 7'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 8'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 9'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 10'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 1'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 2'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 3'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 4'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 5'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 6'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 7'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 8'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 9'
+				),
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'Hey Mister DJ 10'
 				)
 			)
 		);
@@ -21732,6 +21812,10 @@
 
 	var _SearchSong2 = _interopRequireDefault(_SearchSong);
 
+	var _SearchBar = __webpack_require__(184);
+
+	var _SearchBar2 = _interopRequireDefault(_SearchBar);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21743,48 +21827,37 @@
 	var Search = function (_React$Component) {
 	  _inherits(Search, _React$Component);
 
-	  function Search() {
+	  function Search(props) {
 	    _classCallCheck(this, Search);
 
-	    return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
+
+	    _this.state = {
+	      hovering: false
+	    };
+	    return _this;
 	  }
 
 	  _createClass(Search, [{
+	    key: 'onSearchSongMouseEnter',
+	    value: function onSearchSongMouseEnter() {
+	      this.setState({
+	        hovering: true
+	      });
+	    }
+	  }, {
+	    key: 'onSearchSongMouseLeave',
+	    value: function onSearchSongMouseLeave() {
+	      this.setState({
+	        hovering: false
+	      });
+	    }
+	  }, {
 	    key: 'render',
-
-	    //search bar will be blank on default
-	    // 	constructor(props) {
-	    // 		super(props)
-	    // 		this.state ={
-	    // 			value : ''
-	    // 		}
-	    // }
-	    // 	//change state of search bar when searching for songs via Spotify API
-	    // 	 handleSearch(e) {
-	    //     this.setState({
-	    //       value: e.target.value
-	    //     });
-	    //   }
-
-	    //render basic search bar, some bootstrap included
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'search-group' },
-	        _react2.default.createElement(
-	          'form',
-	          { className: 'form-inline' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            _react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Search for music' })
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            { className: 'btn hidden-sm-down' },
-	            _react2.default.createElement('span', { className: 'glyphicon glyphicon-search' })
-	          )
-	        ),
 	        _react2.default.createElement(_SearchResults2.default, null)
 	      );
 	    }
@@ -21818,7 +21891,7 @@
 	var SearchResults = function SearchResults() {
 		return _react2.default.createElement(
 			'div',
-			{ className: 'search-group' },
+			null,
 			_react2.default.createElement(
 				'h3',
 				{ className: 'search-title' },
@@ -21860,6 +21933,21 @@
 				'li',
 				{ className: 'list-group-item song' },
 				'Search Result Song'
+			),
+			_react2.default.createElement(
+				'li',
+				{ className: 'list-group-item song' },
+				'Search Result Song'
+			),
+			_react2.default.createElement(
+				'li',
+				{ className: 'list-group-item song' },
+				'Search Result Song'
+			),
+			_react2.default.createElement(
+				'li',
+				{ className: 'list-group-item song' },
+				'Search Result Song'
 			)
 		);
 	};
@@ -21868,6 +21956,103 @@
 
 /***/ },
 /* 184 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var SearchBar = function SearchBar() {
+		return _react2.default.createElement(
+			'form',
+			{ className: 'form-inline' },
+			_react2.default.createElement(
+				'div',
+				{ className: 'form-group' },
+				_react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Add a song to our playlist!' }),
+				_react2.default.createElement(
+					'button',
+					{ className: 'btn' },
+					'Search'
+				)
+			)
+		);
+	};
+
+	module.exports = SearchBar;
+
+/***/ },
+/* 185 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _SearchBar = __webpack_require__(184);
+
+	var _SearchBar2 = _interopRequireDefault(_SearchBar);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SpotifyPlayer = function (_React$Component) {
+		_inherits(SpotifyPlayer, _React$Component);
+
+		function SpotifyPlayer(props) {
+			_classCallCheck(this, SpotifyPlayer);
+
+			return _possibleConstructorReturn(this, (SpotifyPlayer.__proto__ || Object.getPrototypeOf(SpotifyPlayer)).call(this, props));
+		}
+
+		_createClass(SpotifyPlayer, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'div',
+						{ className: 'header' },
+						_react2.default.createElement('iframe', { src: 'https://embed.spotify.com/?uri=spotify:user:djkorean1:playlist:2aDsZ8ZIw5GGCPNfVsWDts&theme=black', width: '600', height: '75', frameborder: '0', allowtransparency: 'true' }),
+						_react2.default.createElement(_SearchBar2.default, null)
+					)
+				);
+			}
+		}]);
+
+		return SpotifyPlayer;
+	}(_react2.default.Component);
+
+	exports.default = SpotifyPlayer;
+
+/***/ },
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {"use strict";
@@ -31664,10 +31849,10 @@
 
 		return jQuery;
 	});
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(185)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(187)(module)))
 
 /***/ },
-/* 185 */
+/* 187 */
 /***/ function(module, exports) {
 
 	"use strict";
