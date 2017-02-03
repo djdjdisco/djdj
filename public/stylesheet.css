@@ -1,5 +1,5 @@
 /*swatches*/
-/*pink - #C0295B
+/*pink - rgb(245, 97, 140);
 dark grey - #515151
 light grey - ##DCDCDC
 black - #010101*/
@@ -55,7 +55,7 @@ h3 {
 }
 /*SongList Styles*/
 ul {
-	  border: 3px solid #C0295B;
+	  border: 3px solid rgb(245, 97, 140);
     list-style: none;
     overflow-y: scroll;
     height: 200px;
@@ -78,7 +78,7 @@ li, .song {
 
 .btn {  
   /*background-image: url('client/search-solid.png');*/    
-      width: 74px;
+    width: 74px;
     height: 30px;
 }
 
@@ -87,12 +87,26 @@ li, .song {
   padding-top: 15px;
 }
 .form-control{
-      width: 520px;
+    width: 520px;
     font-size: 18px;
     line-height: 24px;
     float: left;
 }
 
-/*Search Results Style*/
+.logo {
+  width: 50%; 
+  height: 50%;
 
-/*Search Song Style*/
+}
+
+audio::-internal-media-controls-download-button {
+    display:none;
+}
+
+audio::-webkit-media-controls-enclosure {
+    overflow:hidden;
+}
+
+audio::-webkit-media-controls-panel {
+    width: calc(100% + 30px); /* Adjust as needed */
+}
