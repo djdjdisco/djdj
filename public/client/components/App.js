@@ -18,7 +18,6 @@ function distance(lat1, lon1, lat2, lon2) {
 const HRlat = 37.7836924;
 const HRlng = -122.4111553;
 
-
 var $ = require('jquery');
 
 var Audios = ({ renderAudios }) => (
@@ -36,7 +35,7 @@ class App extends React.Component {
       data: [],
       currentSong: null
     }
-    setInterval(this.getGeolocation.bind(this), 5000);
+    // setInterval(this.getGeolocation.bind(this), 5000);
   } 
 
   getYoutubeSong(e) {
@@ -54,6 +53,7 @@ class App extends React.Component {
     .then( function(youtubeResponse) {
       console.log('youtube search success!');
       var searchResult = youtubeResponse.data.items;
+      console.log('This is youtubeResponse : ', youtubeResponse);
       var firstSongId = searchResult[0].id.videoId;
       console.log(firstSongId === undefined);
       if ( !firstSongId ) {
@@ -61,14 +61,17 @@ class App extends React.Component {
       }
       var firstSongUrl = 'https://www.youtube.com/watch?v=' + firstSongId;
       var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + firstSongUrl;
+
       var newSrcs = context.state.srcs;
       var newData = context.state.data;
       newSrcs.push(directDownloadLink);
       newData.push(searchResult[0]);
+      console.log('searchResult : ', searchResult[0]);
       context.setState({
         srcs: newSrcs,
         data: newData
       });
+
       if ( context.state.currentSong === null ) {
         console.log('set directDownloadLink');
         context.setState({
@@ -91,14 +94,15 @@ class App extends React.Component {
     this.setState({
       currentSong: null
     });
+
     if ( currentSongIndex < this.state.srcs.length - 1 ) {
-      var playNextSong = function() {
+      var setNextSong = function() {
         this.setState({
           currentSong: this.state.srcs[currentSongIndex + 1]
         });
-        console.log('play next song!');
+        console.log('play next song!', currentSongIndex);
       }.bind(this);
-      setTimeout(playNextSong, 0);
+      setTimeout(setNextSong, 2000);
     }
   }
 
