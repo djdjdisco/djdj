@@ -6,7 +6,9 @@ var SearchResults = (props) => (
 	<div>
 		<h3 className="search-title">Search Results</h3>
 			<ul className='list-group'>
-				{props.searchResults}
+				// {props.searchResults.map(function(song) {
+				//
+				// })}
 		 		<SearchSong />
 			</ul>
 	</div>
