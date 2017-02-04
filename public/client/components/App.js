@@ -39,7 +39,9 @@ class App extends React.Component {
       // array of video data (image url and title)
       data: [],
       // current song being played
-      currentSong: null
+      currentSong: null,
+      // array of search results
+      searchResults: []
     }
   }
     // calculating the current geolocation and distance of user every 5 seconds
@@ -67,6 +69,9 @@ class App extends React.Component {
       console.log('youtube search success!');
       // grab the array of videos, which live in data.items
       var searchResult = youtubeResponse.data.items;
+
+      context.setState({searchResults: searchResult});
+
       console.log('This is youtubeResponse : ', youtubeResponse);
       // retrieve the video ID
       var firstSongId = searchResult[0].id.videoId;
@@ -198,7 +203,7 @@ class App extends React.Component {
         </form>
         <Audios renderAudios={this.renderAudios.bind(this)} />
         <SongList renderPlayList={this.renderPlayList.bind(this)} />
-        <Search />
+        <Search searchResults={this.state.searchResults}/>
       </div>
     )
   }

@@ -21628,7 +21628,9 @@
 	      // array of video data (image url and title)
 	      data: [],
 	      // current song being played
-	      currentSong: null
+	      currentSong: null,
+	      // array of search results
+	      searchResults: []
 	    };
 	    return _this;
 	  }
@@ -21660,6 +21662,9 @@
 	        console.log('youtube search success!');
 	        // grab the array of videos, which live in data.items
 	        var searchResult = youtubeResponse.data.items;
+
+	        context.setState({ searchResults: searchResult });
+
 	        console.log('This is youtubeResponse : ', youtubeResponse);
 	        // retrieve the video ID
 	        var firstSongId = searchResult[0].id.videoId;
@@ -21802,7 +21807,7 @@
 	        ),
 	        _react2.default.createElement(Audios, { renderAudios: this.renderAudios.bind(this) }),
 	        _react2.default.createElement(_SongList2.default, { renderPlayList: this.renderPlayList.bind(this) }),
-	        _react2.default.createElement(_Search2.default, null)
+	        _react2.default.createElement(_Search2.default, { searchResults: this.state.searchResults })
 	      );
 	    }
 	  }]);
@@ -21885,8 +21890,6 @@
 
 	'use strict';
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -21909,53 +21912,13 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Search = function (_React$Component) {
-	  _inherits(Search, _React$Component);
-
-	  function Search(props) {
-	    _classCallCheck(this, Search);
-
-	    var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
-
-	    _this.state = {
-	      hovering: false
-	    };
-	    return _this;
-	  }
-
-	  _createClass(Search, [{
-	    key: 'onSearchSongMouseEnter',
-	    value: function onSearchSongMouseEnter() {
-	      this.setState({
-	        hovering: true
-	      });
-	    }
-	  }, {
-	    key: 'onSearchSongMouseLeave',
-	    value: function onSearchSongMouseLeave() {
-	      this.setState({
-	        hovering: false
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'search-group' },
-	        _react2.default.createElement(_SearchResults2.default, null)
-	      );
-	    }
-	  }]);
-
-	  return Search;
-	}(_react2.default.Component);
+	var Search = function Search(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'search-group' },
+	    _react2.default.createElement(_SearchResults2.default, { searchResults: props.searchResults })
+	  );
+	};
 
 	module.exports = Search;
 
@@ -21979,8 +21942,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchResults = function SearchResults(_ref) {
-		var renderSear = _ref.renderSear;
+	var SearchResults = function SearchResults(props) {
 		return _react2.default.createElement(
 			'div',
 			null,
@@ -21992,6 +21954,7 @@
 			_react2.default.createElement(
 				'ul',
 				{ className: 'list-group' },
+				props.searchResults,
 				_react2.default.createElement(_SearchSong2.default, null)
 			)
 		);
