@@ -9,8 +9,7 @@ black - #010101*/
     position: absolute;
     width: 600px;
     height: 420px;
-    background-color: black;
-    background: url(client/people-dancing.png);
+    /*background-color: black;*/
     top: 23%;
     left: 23%;
 }
@@ -107,8 +106,8 @@ li, .song {
 }
 
 .logo {
-  width: 50%; 
-  height: 50%;
+  width: 95%; 
+  height: 95%;
 
 }
 
