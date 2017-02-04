@@ -21566,7 +21566,7 @@
 
 	var _Search2 = _interopRequireDefault(_Search);
 
-	var _SearchResults = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./SearchResults.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _SearchResults = __webpack_require__(182);
 
 	var _SearchResults2 = _interopRequireDefault(_SearchResults);
 
@@ -21698,42 +21698,42 @@
 
 	        console.log('This is youtubeResponse : ', youtubeResponse);
 	        // retrieve the video ID
-	        var firstSongId = searchResult[0].id.videoId;
-	        // if the ID is undefined, no video exists
-	        console.log(firstSongId === undefined);
-	        // end the request if the song doesn't exist
-	        if (!firstSongId) {
-	          return;
-	        }
-	        // get youtube URL
-	        var firstSongUrl = 'https://www.youtube.com/watch?v=' + firstSongId;
-	        // create the direct DownloadLink, which requires the youtube URL
-	        var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + firstSongUrl;
-
-	        // get current srcs and data from state
-	        var newSrcs = context.state.srcs;
-	        var newData = context.state.data;
-
-	        // push download link and data to the current src/data array
-	        newSrcs.push(directDownloadLink);
-	        newData.push(searchResult[0]);
-	        console.log('searchResult : ', searchResult[0]);
-
-	        // set the state to the newSrc/newData
-	        context.setState({
-	          srcs: newSrcs,
-	          data: newData
-	        });
-
-	        // if there is no current song,
-	        if (context.state.currentSong === null) {
-	          console.log('set directDownloadLink');
-	          // set the state to the current download link
-	          context.setState({
-	            currentSong: directDownloadLink
-	          });
-	        };
-	        console.log('new song : ', directDownloadLink);
+	        // var firstSongId = searchResult[0].id.videoId;
+	        // // if the ID is undefined, no video exists
+	        // console.log(firstSongId === undefined);
+	        // // end the request if the song doesn't exist
+	        // if ( !firstSongId ) {
+	        //   return;
+	        // }
+	        // // get youtube URL
+	        // var firstSongUrl = 'https://www.youtube.com/watch?v=' + firstSongId;
+	        // // create the direct DownloadLink, which requires the youtube URL
+	        // var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + firstSongUrl;
+	        //
+	        // // get current srcs and data from state
+	        // var newSrcs = context.state.srcs;
+	        // var newData = context.state.data;
+	        //
+	        // // push download link and data to the current src/data array
+	        // newSrcs.push(directDownloadLink);
+	        // newData.push(searchResult[0]);
+	        // console.log('searchResult : ', searchResult[0]);
+	        //
+	        // // set the state to the newSrc/newData
+	        // context.setState({
+	        //   srcs: newSrcs,
+	        //   data: newData
+	        // });
+	        //
+	        // // if there is no current song,
+	        // if ( context.state.currentSong === null ) {
+	        //   console.log('set directDownloadLink');
+	        //   // set the state to the current download link
+	        //   context.setState({
+	        //     currentSong: directDownloadLink
+	        //   });
+	        // };
+	        // console.log('new song : ', directDownloadLink);
 	      }).catch(function (err) {
 	        console.log('youtube search fail', err);
 	      });
@@ -21768,6 +21768,54 @@
 	        // plat next song after 2 secs
 	        setTimeout(setNextSong, 2000);
 	      }
+	    }
+
+	    // handle search clicks
+
+	  }, {
+	    key: 'handleSearchClicks',
+	    value: function handleSearchClicks(index) {
+	      var context = this;
+
+	      var searchResult = this.state.searchResults;
+
+	      console.log('whats the index', index);
+	      var selectedSongId = searchResult[index].id.videoId;
+	      // if the ID is undefined, no video exists
+	      console.log(selectedSongId === undefined);
+	      // end the request if the song doesn't exist
+	      if (!selectedSongId) {
+	        return;
+	      }
+	      // get youtube URL
+	      var selectedSongUrl = 'https://www.youtube.com/watch?v=' + selectedSongId;
+	      // create the direct DownloadLink, which requires the youtube URL
+	      var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + selectedSongUrl;
+
+	      // get current srcs and data from state
+	      var newSrcs = context.state.srcs;
+	      var newData = context.state.data;
+
+	      // push download link and data to the current src/data array
+	      newSrcs.push(directDownloadLink);
+	      newData.push(searchResult[index]);
+	      console.log('searchResult : ', searchResult[index]);
+
+	      // set the state to the newSrc/newData
+	      context.setState({
+	        srcs: newSrcs,
+	        data: newData
+	      });
+
+	      // if there is no current song,
+	      if (context.state.currentSong === null) {
+	        console.log('set directDownloadLink');
+	        // set the state to the current download link
+	        context.setState({
+	          currentSong: directDownloadLink
+	        });
+	      };
+	      console.log('new song : ', directDownloadLink);
 	    }
 
 	    // CREATE AS COMPONENT
@@ -21838,7 +21886,7 @@
 	        ),
 	        _react2.default.createElement(Audios, { renderAudios: this.renderAudios.bind(this) }),
 	        _react2.default.createElement(_SongList2.default, { renderPlayList: this.renderPlayList.bind(this) }),
-	        _react2.default.createElement(_Search2.default, { searchResults: this.state.searchResults })
+	        _react2.default.createElement(_Search2.default, { searchResults: this.state.searchResults, handleSearchClicks: this.handleSearchClicks.bind(this) })
 	      );
 	    }
 	  }]);
@@ -21929,7 +21977,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _SearchResults = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./SearchResults\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _SearchResults = __webpack_require__(182);
 
 	var _SearchResults2 = _interopRequireDefault(_SearchResults);
 
@@ -21947,14 +21995,54 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'search-group' },
-	    _react2.default.createElement(_SearchResults2.default, { searchResults: props.searchResults })
+	    _react2.default.createElement(_SearchResults2.default, { searchResults: props.searchResults, handleSearchClicks: props.handleSearchClicks })
 	  );
 	};
 
 	module.exports = Search;
 
 /***/ },
-/* 182 */,
+/* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _SearchSong = __webpack_require__(183);
+
+	var _SearchSong2 = _interopRequireDefault(_SearchSong);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var SearchResults = function SearchResults(props) {
+		return _react2.default.createElement(
+			'div',
+			null,
+			_react2.default.createElement(
+				'h3',
+				{ className: 'search-title' },
+				'Search Results'
+			),
+			_react2.default.createElement(
+				'ul',
+				{ className: 'list-group' },
+				props.searchResults.map(function (song, i) {
+					return _react2.default.createElement(_SearchSong2.default, { index: i, song: song, handleSearchClicks: props.handleSearchClicks });
+				})
+			)
+		);
+	};
+
+	module.exports = SearchResults;
+
+/***/ },
 /* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -21970,8 +22058,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchSong = function SearchSong(_ref) {
-		var data = _ref.data;
+	var SearchSong = function SearchSong(props) {
 		return (
 			//need to inherit song info from parent
 			//two ways of making the song model - as a link and as a button  --> used to be line 9 <img className="thumbnail" src="#"/>
@@ -21981,8 +22068,10 @@
 				null,
 				_react2.default.createElement(
 					'li',
-					{ className: 'list-group-item song' },
-					'data.snippet.title'
+					{ onClick: function onClick() {
+							props.handleSearchClicks(props.index);
+						}, className: 'list-group-item song' },
+					props.song.snippet.title
 				)
 			)
 		);

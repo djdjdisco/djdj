@@ -42,7 +42,8 @@ app.use( function(incomingRequest, res, next) {
 });
 
 // serving the user index.html
-app.get('/', util.checkUser, function(req, res) {
+// app.get('/', util.checkUser, function(req, res) {
+app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
@@ -63,13 +64,13 @@ app.post('/signup', function(req, res) {
       res.redirect('/?username=' + username + '&password=' + password);
     });
   } else {
-    res.redirect('/login');    
+    res.redirect('/login');
   }
 });
 
 
 
-// listening for all requests 
+// listening for all requests
 var port = 3000;
 app.listen(port, function () {
   console.log('You are now running on port ' + port + '!');

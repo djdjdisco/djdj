@@ -111,42 +111,42 @@ class App extends React.Component {
 
       console.log('This is youtubeResponse : ', youtubeResponse);
       // retrieve the video ID
-      var firstSongId = searchResult[0].id.videoId;
-      // if the ID is undefined, no video exists
-      console.log(firstSongId === undefined);
-      // end the request if the song doesn't exist
-      if ( !firstSongId ) {
-        return;
-      }
-      // get youtube URL
-      var firstSongUrl = 'https://www.youtube.com/watch?v=' + firstSongId;
-      // create the direct DownloadLink, which requires the youtube URL
-      var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + firstSongUrl;
-
-      // get current srcs and data from state
-      var newSrcs = context.state.srcs;
-      var newData = context.state.data;
-
-      // push download link and data to the current src/data array
-      newSrcs.push(directDownloadLink);
-      newData.push(searchResult[0]);
-      console.log('searchResult : ', searchResult[0]);
-
-      // set the state to the newSrc/newData
-      context.setState({
-        srcs: newSrcs,
-        data: newData
-      });
-
-      // if there is no current song,
-      if ( context.state.currentSong === null ) {
-        console.log('set directDownloadLink');
-        // set the state to the current download link
-        context.setState({
-          currentSong: directDownloadLink
-        });
-      };
-      console.log('new song : ', directDownloadLink);
+      // var firstSongId = searchResult[0].id.videoId;
+      // // if the ID is undefined, no video exists
+      // console.log(firstSongId === undefined);
+      // // end the request if the song doesn't exist
+      // if ( !firstSongId ) {
+      //   return;
+      // }
+      // // get youtube URL
+      // var firstSongUrl = 'https://www.youtube.com/watch?v=' + firstSongId;
+      // // create the direct DownloadLink, which requires the youtube URL
+      // var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + firstSongUrl;
+      //
+      // // get current srcs and data from state
+      // var newSrcs = context.state.srcs;
+      // var newData = context.state.data;
+      //
+      // // push download link and data to the current src/data array
+      // newSrcs.push(directDownloadLink);
+      // newData.push(searchResult[0]);
+      // console.log('searchResult : ', searchResult[0]);
+      //
+      // // set the state to the newSrc/newData
+      // context.setState({
+      //   srcs: newSrcs,
+      //   data: newData
+      // });
+      //
+      // // if there is no current song,
+      // if ( context.state.currentSong === null ) {
+      //   console.log('set directDownloadLink');
+      //   // set the state to the current download link
+      //   context.setState({
+      //     currentSong: directDownloadLink
+      //   });
+      // };
+      // console.log('new song : ', directDownloadLink);
     })
     .catch( function(err) {
       console.log('youtube search fail', err);
@@ -179,6 +179,53 @@ class App extends React.Component {
       // plat next song after 2 secs
       setTimeout(setNextSong, 2000);
     }
+  }
+
+  // handle search clicks
+  handleSearchClicks (index) {
+    var context = this;
+
+    var searchResult = this.state.searchResults;
+
+    console.log('whats the index', index)
+    var selectedSongId = searchResult[index].id.videoId;
+    // if the ID is undefined, no video exists
+    console.log(selectedSongId === undefined);
+    // end the request if the song doesn't exist
+    if ( !selectedSongId ) {
+      return;
+    }
+    // get youtube URL
+    var selectedSongUrl = 'https://www.youtube.com/watch?v=' + selectedSongId;
+    // create the direct DownloadLink, which requires the youtube URL
+    var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + selectedSongUrl;
+
+    // get current srcs and data from state
+    var newSrcs = context.state.srcs;
+    var newData = context.state.data;
+
+    // push download link and data to the current src/data array
+    newSrcs.push(directDownloadLink);
+    newData.push(searchResult[index]);
+    console.log('searchResult : ', searchResult[index]);
+
+    // set the state to the newSrc/newData
+    context.setState({
+      srcs: newSrcs,
+      data: newData
+    });
+
+    // if there is no current song,
+    if ( context.state.currentSong === null ) {
+      console.log('set directDownloadLink');
+      // set the state to the current download link
+      context.setState({
+        currentSong: directDownloadLink
+      });
+    };
+    console.log('new song : ', directDownloadLink);
+
+
   }
 
   // CREATE AS COMPONENT
@@ -240,7 +287,7 @@ class App extends React.Component {
         </form>
         <Audios renderAudios={this.renderAudios.bind(this)} />
         <SongList renderPlayList={this.renderPlayList.bind(this)} />
-        <Search searchResults={this.state.searchResults}/>
+        <Search searchResults={this.state.searchResults} handleSearchClicks={this.handleSearchClicks.bind(this)}/>
       </div>
     )
   }
