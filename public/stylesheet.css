@@ -9,8 +9,7 @@ black - #010101*/
     position: absolute;
     width: 600px;
     height: 420px;
-    background-color: black;
-    background: url(client/people-dancing.png);
+    /*background-color: black;*/
     top: 23%;
     left: 23%;
 }
@@ -55,10 +54,11 @@ h3 {
 }
 /*SongList Styles*/
 ul {
-	  border: 3px solid rgb(245, 97, 140);
+	 border: 3px solid rgb(68, 63, 64);
     list-style: none;
     overflow-y: scroll;
     height: 200px;
+    border-radius: 7px;
 }
 
 .search-group ul div {
@@ -67,13 +67,24 @@ ul {
 
 /*Song Styles*/
 li, .song {
-  color: #DCDCDC;
-  background-color: #515151;
-  border: 0.5px solid #010101;
-  font-family: Helvetica;
-  font-size: 1em;
-  line-height: 2.4em;
-  padding-left: 10px;
+     color: #DCDCDC;
+    /* background-color: #393a3d; */
+    border-bottom: 0.5px solid #393a3d;
+    font-size: 9px;
+    line-height: 3.4em;
+    padding: 0px 0px 10px 5px;
+    width: 350px;
+    float: left;
+    font-family: Helvetica;
+ 
+}
+
+.thumbnail {
+    height: 45px;
+    width: 45px;
+    float: left;
+    padding-left: 2px;
+
 }
 
 .btn {  
@@ -91,12 +102,18 @@ li, .song {
     font-size: 18px;
     line-height: 24px;
     float: left;
+    border-radius: 7px;
 }
 
 .logo {
-  width: 50%; 
-  height: 50%;
+  width: 95%; 
+  height: 95%;
 
+}
+
+audio{
+  padding-top: 20px;
+  width:600px !important;
 }
 
 audio::-internal-media-controls-download-button {
@@ -108,5 +125,5 @@ audio::-webkit-media-controls-enclosure {
 }
 
 audio::-webkit-media-controls-panel {
-    width: calc(100% + 30px); /* Adjust as needed */
+    width: 600px !important; /* Adjust as needed */
 }
