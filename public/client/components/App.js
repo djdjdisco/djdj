@@ -14,7 +14,10 @@ var $ = require('jquery');
 class App extends React.Component {
   constructor(props) {
     super(props);
-    } 
+    this.state = {
+      searchQuery: ''
+    }
+  }
 
 //if we are not using Spotify's music player, we need volume controls...
   //control volume up
@@ -34,13 +37,23 @@ class App extends React.Component {
   //   }
   // }
   //
-  //need a function for searching?
+
+  //querying function for state.searchQuery
+  handleQuery (event) {
+    this.setState({searchQuery: event.target.value})
+    console.log('changing...', this.state.searchQuery)
+  }
+
+  //function for searching to spotify's API
+  handleSubmit () {
+
+  }
 
   render() {
     return (
       <div>
         <SongList />
-        <Search />
+        <Search onQuery = {this.state.searchQuery} handleQuery = {this.handleQuery.bind(this)}/>
       </div>
     )
   }

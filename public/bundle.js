@@ -21592,7 +21592,12 @@
 	  function App(props) {
 	    _classCallCheck(this, App);
 
-	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+	    _this.state = {
+	      searchQuery: ''
+	    };
+	    return _this;
 	  }
 
 	  //if we are not using Spotify's music player, we need volume controls...
@@ -21613,16 +21618,30 @@
 	  //   }
 	  // }
 	  //
-	  //need a function for searching?
+
+	  //querying function for state.searchQuery
+
 
 	  _createClass(App, [{
+	    key: 'handleQuery',
+	    value: function handleQuery(event) {
+	      this.setState({ searchQuery: event.target.value });
+	      console.log('changing...', this.state.searchQuery);
+	    }
+
+	    //function for searching to spotify's API
+
+	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit() {}
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(_SongList2.default, null),
-	        _react2.default.createElement(_Search2.default, null)
+	        _react2.default.createElement(_Search2.default, { onQuery: this.state.searchQuery, handleQuery: this.handleQuery.bind(this) })
 	      );
 	    }
 	  }]);
@@ -21714,8 +21733,6 @@
 
 	'use strict';
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -21734,64 +21751,63 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	// class Search extends React.Component {
+	// 	//search bar will be blank on default
+	// // 	constructor(props) {
+	// // 		super(props)
+	// // 		this.state ={
+	// // 			value : ''
+	// // 		}
+	// // }
+	// // 	//change state of search bar when searching for songs via Spotify API
+	// // 	 handleSearch(e) {
+	// //     this.setState({
+	// //       value: e.target.value
+	// //     });
+	// //   }
+	//
+	//
+	//
+	//   //render basic search bar, some bootstrap included
+	// 	render() {
+	// return (
+	//   <div className="search-group">
+	//     <form className="form-inline">
+	//       <div className="form-group">
+	//         <input type="text" className="form-control" placeholder="Search for music" />
+	//       </div>
+	//         <button className="btn hidden-sm-down"> search
+	//         </button>
+	//     </form>
+	//     <SearchResults />
+	//   </div>
+	//
+	// );
+	//   }
+	// }
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Search = function (_React$Component) {
-	  _inherits(Search, _React$Component);
-
-	  function Search() {
-	    _classCallCheck(this, Search);
-
-	    return _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).apply(this, arguments));
-	  }
-
-	  _createClass(Search, [{
-	    key: 'render',
-
-	    //search bar will be blank on default
-	    // 	constructor(props) {
-	    // 		super(props)
-	    // 		this.state ={
-	    // 			value : ''
-	    // 		}
-	    // }
-	    // 	//change state of search bar when searching for songs via Spotify API
-	    // 	 handleSearch(e) {
-	    //     this.setState({
-	    //       value: e.target.value
-	    //     });
-	    //   }
-
-	    //render basic search bar, some bootstrap included
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'search-group' },
-	        _react2.default.createElement(
-	          'form',
-	          { className: 'form-inline' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'form-group' },
-	            _react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Search for music' })
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            { className: 'btn hidden-sm-down' },
-	            _react2.default.createElement('span', { className: 'glyphicon glyphicon-search' })
-	          )
-	        ),
-	        _react2.default.createElement(_SearchResults2.default, null)
-	      );
-	    }
-	  }]);
-
-	  return Search;
-	}(_react2.default.Component);
+	var Search = function Search(props) {
+		console.log('props in search', props);
+		return _react2.default.createElement(
+			'div',
+			{ className: 'search-group' },
+			_react2.default.createElement(
+				'form',
+				{ className: 'form-inline' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'form-group' },
+					_react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Search for music', onChange: props.handleQuery })
+				),
+				_react2.default.createElement(
+					'button',
+					{ className: 'btn hidden-sm-down' },
+					' search'
+				)
+			),
+			_react2.default.createElement(_SearchResults2.default, null)
+		);
+	};
 
 	module.exports = Search;
 
