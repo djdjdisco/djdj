@@ -7,9 +7,13 @@ var SearchSong = (props) => (
 
 		<div>
 
-		<li onClick={function () {
-				props.handleSearchClicks(props.index)}
-			} className="list-group-item song">{props.song.snippet.title}</li>
+		<li className="list-group-item song">
+			<button onClick={function () {
+					props.handleSearchClicks(props.index)}
+				}
+				>Add</button>
+			{props.song.snippet.title}
+		</li>
 	</div>
 
 	)

@@ -22068,9 +22068,15 @@
 				null,
 				_react2.default.createElement(
 					'li',
-					{ onClick: function onClick() {
-							props.handleSearchClicks(props.index);
-						}, className: 'list-group-item song' },
+					{ className: 'list-group-item song' },
+					_react2.default.createElement(
+						'button',
+						{ onClick: function onClick() {
+								props.handleSearchClicks(props.index);
+							}
+						},
+						'Add'
+					),
 					props.song.snippet.title
 				)
 			)
