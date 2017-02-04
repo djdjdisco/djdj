@@ -7,6 +7,10 @@ var SearchSong = () => {
 	return (
 		<div>
 			<li className="list-group-item song">Search Result Song</li>
+			<li className="list-group-item song">Search Result Song</li>
+			<li className="list-group-item song">Search Result Song</li>
+			<li className="list-group-item song">Search Result Song</li>
+			
 		</div>
 		
 	)
