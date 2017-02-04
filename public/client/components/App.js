@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import SongList from './SongList.js'
-import Search from './Search.js' //NOT USING THIS COMPONENT
+import Search from './Search.js'
 import SearchResults from './SearchResults.js'
 import SearchSong from './SearchSong.js'
-import SpotifyPlayer from './SpotifyPlayer.js'
+import SearchBar from './SearchBar.js'
 import axios from 'axios'
 import {
   BrowserRouter as Router,
@@ -247,21 +247,6 @@ class App extends React.Component {
     });
   }
 
-  // CREATE AS COMPONENT?
-  // render playlist
-  renderPlayList(Song) {
-    return (
-      <ul className='list-group'>
-        {this.state.data.map(function(data, i) {
-          return (
-            <Song data={data} key={i} />
-          );
-        })}
-      </ul>
-    );
-  }
-
-
   // Track user's geolocation
   getGeolocation() {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -281,12 +266,9 @@ class App extends React.Component {
         <SongList />
       */}
         <img className="logo" src="static/images/DJ-DJ.png" />
-        <form className="form-inline" onSubmit={this.getYoutubeSong.bind(this)}>
-          <input type='text' className="form-control" placeholder="Add a song to the playlist!" onChange={this.handleChange.bind(this)}/>
-          <input type='submit' value='Submit'/>
-        </form>
+        <SearchBar handleChange={this.handleChange.bind(this)} getYoutubeSong={this.getYoutubeSong.bind(this)}/>
         <Audios renderAudios={this.renderAudios.bind(this)} />
-        <SongList renderPlayList={this.renderPlayList.bind(this)} />
+        <SongList data={this.state.data}/>
         <Search searchResults={this.state.searchResults} handleSearchClicks={this.handleSearchClicks.bind(this)}/>
       </div>
     )

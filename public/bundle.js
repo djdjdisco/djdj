@@ -21574,9 +21574,9 @@
 
 	var _SearchSong2 = _interopRequireDefault(_SearchSong);
 
-	var _SpotifyPlayer = __webpack_require__(186);
+	var _SearchBar = __webpack_require__(187);
 
-	var _SpotifyPlayer2 = _interopRequireDefault(_SpotifyPlayer);
+	var _SearchBar2 = _interopRequireDefault(_SearchBar);
 
 	var _axios = __webpack_require__(188);
 
@@ -21590,8 +21590,7 @@
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //NOT USING THIS COMPONENT
-
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	// Function calculates the distance between two lat/long points for our geolocation feature
 	function distance(lat1, lon1, lat2, lon2) {
@@ -21843,21 +21842,6 @@
 	      });
 	    }
 
-	    // CREATE AS COMPONENT?
-	    // render playlist
-
-	  }, {
-	    key: 'renderPlayList',
-	    value: function renderPlayList(Song) {
-	      return _react2.default.createElement(
-	        'ul',
-	        { className: 'list-group' },
-	        this.state.data.map(function (data, i) {
-	          return _react2.default.createElement(Song, { data: data, key: i });
-	        })
-	      );
-	    }
-
 	    // Track user's geolocation
 
 	  }, {
@@ -21878,14 +21862,9 @@
 	        'div',
 	        null,
 	        _react2.default.createElement('img', { className: 'logo', src: 'static/images/DJ-DJ.png' }),
-	        _react2.default.createElement(
-	          'form',
-	          { className: 'form-inline', onSubmit: this.getYoutubeSong.bind(this) },
-	          _react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Add a song to the playlist!', onChange: this.handleChange.bind(this) }),
-	          _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
-	        ),
+	        _react2.default.createElement(_SearchBar2.default, { handleChange: this.handleChange.bind(this), getYoutubeSong: this.getYoutubeSong.bind(this) }),
 	        _react2.default.createElement(Audios, { renderAudios: this.renderAudios.bind(this) }),
-	        _react2.default.createElement(_SongList2.default, { renderPlayList: this.renderPlayList.bind(this) }),
+	        _react2.default.createElement(_SongList2.default, { data: this.state.data }),
 	        _react2.default.createElement(_Search2.default, { searchResults: this.state.searchResults, handleSearchClicks: this.handleSearchClicks.bind(this) })
 	      );
 	    }
@@ -21914,10 +21893,14 @@
 
 	var _Song2 = _interopRequireDefault(_Song);
 
+	var _Playlist = __webpack_require__(250);
+
+	var _Playlist2 = _interopRequireDefault(_Playlist);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var SongList = function SongList(_ref) {
-		var renderPlayList = _ref.renderPlayList;
+		var data = _ref.data;
 		return _react2.default.createElement(
 			'div',
 			{ className: 'playlist-group' },
@@ -21926,7 +21909,7 @@
 				{ className: 'playlist-title' },
 				'Playlist'
 			),
-			renderPlayList(_Song2.default)
+			_react2.default.createElement(_Playlist2.default, { data: data })
 		);
 	};
 
@@ -21949,15 +21932,15 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Song = function Song(_ref) {
-	  var data = _ref.data;
+	  var datum = _ref.datum;
 	  return _react2.default.createElement(
 	    'div',
 	    null,
-	    _react2.default.createElement('img', { className: 'thumbnail', src: data.snippet.thumbnails.default.url }),
+	    _react2.default.createElement('img', { className: 'thumbnail', src: datum.snippet.thumbnails.default.url }),
 	    _react2.default.createElement(
 	      'li',
 	      { className: 'list-group-item song' },
-	      data.snippet.title
+	      datum.snippet.title
 	    )
 	  );
 	};
@@ -22088,68 +22071,7 @@
 /***/ },
 /* 184 */,
 /* 185 */,
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(32);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _SearchBar = __webpack_require__(187);
-
-	var _SearchBar2 = _interopRequireDefault(_SearchBar);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SpotifyPlayer = function (_React$Component) {
-		_inherits(SpotifyPlayer, _React$Component);
-
-		function SpotifyPlayer(props) {
-			_classCallCheck(this, SpotifyPlayer);
-
-			return _possibleConstructorReturn(this, (SpotifyPlayer.__proto__ || Object.getPrototypeOf(SpotifyPlayer)).call(this, props));
-		}
-
-		_createClass(SpotifyPlayer, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'div',
-						{ className: 'header' },
-						_react2.default.createElement('iframe', { src: 'https://embed.spotify.com/?uri=spotify:user:djkorean1:playlist:2aDsZ8ZIw5GGCPNfVsWDts&theme=black', width: '600', height: '75', frameborder: '0', allowtransparency: 'true' }),
-						_react2.default.createElement(_SearchBar2.default, null)
-					)
-				);
-			}
-		}]);
-
-		return SpotifyPlayer;
-	}(_react2.default.Component);
-
-	exports.default = SpotifyPlayer;
-
-/***/ },
+/* 186 */,
 /* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -22165,20 +22087,12 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchBar = function SearchBar() {
+	var SearchBar = function SearchBar(props) {
 		return _react2.default.createElement(
 			'form',
-			{ className: 'form-inline' },
-			_react2.default.createElement(
-				'div',
-				{ className: 'form-group' },
-				_react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Add a song to our playlist!' }),
-				_react2.default.createElement(
-					'button',
-					{ className: 'btn' },
-					'Search'
-				)
-			)
+			{ className: 'form-inline', onSubmit: props.getYoutubeSong },
+			_react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Add a song to the playlist!', onChange: props.handleChange }),
+			_react2.default.createElement('input', { type: 'submit', value: 'Submit' })
 		);
 	};
 
@@ -27028,6 +26942,42 @@
 	};
 
 	exports.default = withRouter;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _Song = __webpack_require__(180);
+
+	var _Song2 = _interopRequireDefault(_Song);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Playlist = function Playlist(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      'ul',
+	      { className: 'list-group' },
+	      props.data.map(function (datum, i) {
+	        return _react2.default.createElement(_Song2.default, { datum: datum, key: i });
+	      })
+	    )
+	  );
+	};
+
+	module.exports = Playlist;
 
 /***/ }
 /******/ ]);

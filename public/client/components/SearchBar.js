@@ -2,16 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-var SearchBar = () => (
+var SearchBar = (props) => (
 	(
-    <form className="form-inline">
-	    <div className="form-group">
-	      <input type="text" className="form-control" placeholder="Add a song to our playlist!" />
-	      <button className="btn">Search
-        
-      </button>
-	    </div>
-  	</form>
+		<form className="form-inline" onSubmit={props.getYoutubeSong}>
+			<input type='text' className="form-control" placeholder="Add a song to the playlist!" onChange={props.handleChange}/>
+			<input type='submit' value='Submit'/>
+		</form>
 	)
 )
 
