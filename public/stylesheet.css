@@ -125,5 +125,5 @@ audio::-webkit-media-controls-enclosure {
 }
 
 audio::-webkit-media-controls-panel {
-    width: 600px !important; /* Adjust as needed */
+  width: 630px !important; /* Adjust as needed */
 }
