@@ -21590,7 +21590,8 @@
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //NOT USING THIS COMPONENT
+
 
 	// Function calculates the distance between two lat/long points for our geolocation feature
 	function distance(lat1, lon1, lat2, lon2) {
@@ -21804,6 +21805,20 @@
 	      );
 	    }
 
+	    //function to render search results
+	    // renderSearchResults(SearchSong) {
+	    //   return (
+	    //     <ul className='list-group'>
+	    //       {this.state.data.map(function(data, i) {
+	    //         return (
+	    //           <SearchSong data={data} key={i} />
+	    //         );
+	    //       })}
+	    //     </ul>
+	    //   )
+	    // }
+
+
 	    // Track user's geolocation 
 
 	  }, {
@@ -21826,12 +21841,13 @@
 	        _react2.default.createElement('img', { className: 'logo', src: 'static/images/DJ-DJ.png' }),
 	        _react2.default.createElement(
 	          'form',
-	          { onSubmit: this.getYoutubeSong.bind(this) },
-	          _react2.default.createElement('input', { type: 'text', onChange: this.handleChange.bind(this) }),
+	          { className: 'form-inline', onSubmit: this.getYoutubeSong.bind(this) },
+	          _react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Add a song to the playlist!', onChange: this.handleChange.bind(this) }),
 	          _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
 	        ),
 	        _react2.default.createElement(Audios, { renderAudios: this.renderAudios.bind(this) }),
-	        _react2.default.createElement(_SongList2.default, { renderPlayList: this.renderPlayList.bind(this) })
+	        _react2.default.createElement(_SongList2.default, { renderPlayList: this.renderPlayList.bind(this) }),
+	        _react2.default.createElement(_Search2.default, null)
 	      );
 	    }
 	  }]);
@@ -21898,7 +21914,7 @@
 	  return _react2.default.createElement(
 	    'div',
 	    null,
-	    _react2.default.createElement('img', { src: data.snippet.thumbnails.default.url }),
+	    _react2.default.createElement('img', { className: 'thumbnail', src: data.snippet.thumbnails.default.url }),
 	    _react2.default.createElement(
 	      'li',
 	      { className: 'list-group-item song' },
@@ -22008,7 +22024,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchResults = function SearchResults() {
+	var SearchResults = function SearchResults(_ref) {
+		var renderSear = _ref.renderSear;
 		return _react2.default.createElement(
 			'div',
 			null,
@@ -22043,31 +22060,20 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchSong = function SearchSong() {
-		//need to inherit song info from parent
-		//two ways of making the song model - as a link and as a button
-		return _react2.default.createElement(
-			'div',
-			null,
+	var SearchSong = function SearchSong(_ref) {
+		var data = _ref.data;
+		return (
+			//need to inherit song info from parent
+			//two ways of making the song model - as a link and as a button  --> used to be line 9 <img className="thumbnail" src="#"/>
+
 			_react2.default.createElement(
-				'li',
-				{ className: 'list-group-item song' },
-				'Search Result Song'
-			),
-			_react2.default.createElement(
-				'li',
-				{ className: 'list-group-item song' },
-				'Search Result Song'
-			),
-			_react2.default.createElement(
-				'li',
-				{ className: 'list-group-item song' },
-				'Search Result Song'
-			),
-			_react2.default.createElement(
-				'li',
-				{ className: 'list-group-item song' },
-				'Search Result Song'
+				'div',
+				null,
+				_react2.default.createElement(
+					'li',
+					{ className: 'list-group-item song' },
+					'data.snippet.title'
+				)
 			)
 		);
 	};
