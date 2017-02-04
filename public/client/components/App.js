@@ -6,6 +6,12 @@ import SearchResults from './SearchResults.js'
 import SearchSong from './SearchSong.js'
 import SpotifyPlayer from './SpotifyPlayer.js'
 import axios from 'axios'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
+
 
 // Function calculates the distance between two lat/long points for our geolocation feature
 function distance(lat1, lon1, lat2, lon2) {
@@ -19,6 +25,37 @@ function distance(lat1, lon1, lat2, lon2) {
 }
 const HRlat = 37.7836924;
 const HRlng = -122.4111553;
+
+// var login = () => (
+//   <div>
+//     <h2>login</h2>
+//   </div>
+// )
+
+// var signup = () => (
+//   <div>
+//     <h2>signup</h2>
+//   </div>
+// )
+
+// var ExampleRouter = () => (
+//   <Router>
+//     <div>
+//       <ul>
+//         <li><Link to="/login">login</Link></li>
+//         <li><Link to="/signup">signup</Link></li>
+//       </ul>
+
+//       <hr/>
+
+//       <Route path="/login" component={login}/>
+//       <Route path="/signup" component={signup}/>
+//     </div>
+//   </Router>
+// )
+
+
+
 
 
 //will probably go in spotifyplayer

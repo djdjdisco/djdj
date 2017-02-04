@@ -60,9 +60,11 @@ app.post('/signup', function(req, res) {
   if ( !util.authData[username] ) {
     util.hashPassword(username, password, function(hashedPassword) {
       util.savePassword(username, hashedPassword);
+      res.redirect('/?username=' + username + '&password=' + password);
     });
+  } else {
+    res.redirect('/login');    
   }
-  res.redirect('/login');
 });
 
 

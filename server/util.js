@@ -9,6 +9,8 @@ const someOtherPlaintextPassword = 'not_bacon';
 var checkUser = function(req, res, next) {
   var username = req.query.username;
   var plainPassword = req.query.password;
+  console.log(username, plainPassword);
+  console.log(authData[username]);
   bcrypt.compare(plainPassword, authData[username])
   .then( function(isAuthenticated) {
     console.log('Is this user authenticated ? ', isAuthenticated);
