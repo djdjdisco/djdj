@@ -21575,6 +21575,8 @@
 
 	var _axios2 = _interopRequireDefault(_axios);
 
+	var _reactRouterDom = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"react-router-dom\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21594,6 +21596,35 @@
 	}
 	var HRlat = 37.7836924;
 	var HRlng = -122.4111553;
+
+	// var login = () => (
+	//   <div>
+	//     <h2>login</h2>
+	//   </div>
+	// )
+
+	// var signup = () => (
+	//   <div>
+	//     <h2>signup</h2>
+	//   </div>
+	// )
+
+	// var ExampleRouter = () => (
+	//   <Router>
+	//     <div>
+	//       <ul>
+	//         <li><Link to="/login">login</Link></li>
+	//         <li><Link to="/signup">signup</Link></li>
+	//       </ul>
+
+	//       <hr/>
+
+	//       <Route path="/login" component={login}/>
+	//       <Route path="/signup" component={signup}/>
+	//     </div>
+	//   </Router>
+	// )
+
 
 	//will probably go in spotifyplayer
 	var Audios = function Audios(_ref) {
@@ -21736,7 +21767,7 @@
 	      if (this.state.currentSong !== null) {
 	        return _react2.default.createElement(
 	          'audio',
-	          { preload: 'auto', controls: true, autoPlay: 'autoplay', onEnded: this.playNextSong.bind(this) },
+	          { preload: 'auto', controls: true, autoPlay: 'true', onEnded: this.playNextSong.bind(this) },
 	          _react2.default.createElement('source', { src: this.state.currentSong, type: 'audio/mp3' })
 	        );
 	      }
