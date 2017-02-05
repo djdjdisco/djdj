@@ -211,8 +211,25 @@ class App extends React.Component {
     this.playSong(index);
   }
 
-  handleRemove() {
+  handleRemove(index) {
     console.log('clicking remove')
+    var newSrc = this.state.srcs;
+    var newData = this.state.data;
+    var clickedSrc = newSrc[index];
+    newSrc.splice(index, 1)
+    newData.splice(index, 1)
+    console.log('newsrc', newSrc)
+    this.setState({
+      srcs: newSrc,
+      data: newData
+    });
+
+    // if the index being removed is the current song playing
+    if (this.state.currentSong === clickedSrc) {
+      // play the next song
+      this.playNextSong();
+    }
+
   }
   // updating state's value to the user's query
   handleChange(e) {
@@ -242,7 +259,7 @@ class App extends React.Component {
         <img className="logo" src="static/images/DJ-DJ.png" />
         <SearchBar handleChange={this.handleChange.bind(this)} getYoutubeSong={this.getYoutubeSong.bind(this)}/>
         <AudioPlayer currentSong={this.state.currentSong} playNextSong={this.playNextSong.bind(this)} />
-        <SongList data={this.state.data} handlePlay={this.handlePlay.bind(this)} handleRemove={this.handleRemove.bind(this)}/>
+        <SongList data={this.state.data} srcs={this.state.srcs} handlePlay={this.handlePlay.bind(this)} handleRemove={this.handleRemove.bind(this)}/>
         <Search searchResults={this.state.searchResults} handleSearchClicks={this.handleSearchClicks.bind(this)}/>
       </div>
     )

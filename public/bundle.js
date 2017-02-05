@@ -21805,8 +21805,24 @@
 	    }
 	  }, {
 	    key: 'handleRemove',
-	    value: function handleRemove() {
+	    value: function handleRemove(index) {
 	      console.log('clicking remove');
+	      var newSrc = this.state.srcs;
+	      var newData = this.state.data;
+	      var clickedSrc = newSrc[index];
+	      newSrc.splice(index, 1);
+	      newData.splice(index, 1);
+	      console.log('newsrc', newSrc);
+	      this.setState({
+	        srcs: newSrc,
+	        data: newData
+	      });
+
+	      // if the index being removed is the current song playing
+	      if (this.state.currentSong === clickedSrc) {
+	        // play the next song
+	        this.playNextSong();
+	      }
 	    }
 	    // updating state's value to the user's query
 
@@ -21840,7 +21856,7 @@
 	        _react2.default.createElement('img', { className: 'logo', src: 'static/images/DJ-DJ.png' }),
 	        _react2.default.createElement(_SearchBar2.default, { handleChange: this.handleChange.bind(this), getYoutubeSong: this.getYoutubeSong.bind(this) }),
 	        _react2.default.createElement(_Audio2.default, { currentSong: this.state.currentSong, playNextSong: this.playNextSong.bind(this) }),
-	        _react2.default.createElement(_SongList2.default, { data: this.state.data, handlePlay: this.handlePlay.bind(this), handleRemove: this.handleRemove.bind(this) }),
+	        _react2.default.createElement(_SongList2.default, { data: this.state.data, srcs: this.state.srcs, handlePlay: this.handlePlay.bind(this), handleRemove: this.handleRemove.bind(this) }),
 	        _react2.default.createElement(_Search2.default, { searchResults: this.state.searchResults, handleSearchClicks: this.handleSearchClicks.bind(this) })
 	      );
 	    }
@@ -21920,7 +21936,9 @@
 	      ),
 	      _react2.default.createElement(
 	         'button',
-	         { onClick: props.handleRemove, className: 'removeSong' },
+	         { onClick: function onClick() {
+	               props.handleRemove(props.index);
+	            }, className: 'removeSong' },
 	         'Remove'
 	      ),
 	      _react2.default.createElement(
