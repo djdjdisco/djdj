@@ -34,7 +34,7 @@ html {
 	position: relative;
     float: left;
     width: 350px;
-    
+
 }
 
 .playlist-group div {
@@ -72,11 +72,11 @@ li, .song {
     border-bottom: 0.5px solid #393a3d;
     font-size: 9px;
     line-height: 3.4em;
-    padding: 0px 0px 10px 5px;
+    /*padding: 0px 0px 10px 5px;*/
     width: 350px;
     float: left;
     font-family: Helvetica;
- 
+
 }
 
 .thumbnail {
@@ -87,8 +87,8 @@ li, .song {
 
 }
 
-.btn {  
-  /*background-image: url('client/search-solid.png');*/    
+.btn {
+  /*background-image: url('client/search-solid.png');*/
     width: 74px;
     height: 30px;
 }
@@ -106,7 +106,7 @@ li, .song {
 }
 
 .logo {
-  width: 95%; 
+  width: 95%;
   height: 95%;
 
 }

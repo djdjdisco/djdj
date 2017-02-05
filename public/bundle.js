@@ -21578,6 +21578,10 @@
 
 	var _SearchBar2 = _interopRequireDefault(_SearchBar);
 
+	var _Audio = __webpack_require__(251);
+
+	var _Audio2 = _interopRequireDefault(_Audio);
+
 	var _axios = __webpack_require__(188);
 
 	var _axios2 = _interopRequireDefault(_axios);
@@ -21696,43 +21700,6 @@
 	        context.setState({ searchResults: searchResult });
 
 	        console.log('This is youtubeResponse : ', youtubeResponse);
-	        // retrieve the video ID
-	        // var firstSongId = searchResult[0].id.videoId;
-	        // // if the ID is undefined, no video exists
-	        // console.log(firstSongId === undefined);
-	        // // end the request if the song doesn't exist
-	        // if ( !firstSongId ) {
-	        //   return;
-	        // }
-	        // // get youtube URL
-	        // var firstSongUrl = 'https://www.youtube.com/watch?v=' + firstSongId;
-	        // // create the direct DownloadLink, which requires the youtube URL
-	        // var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + firstSongUrl;
-	        //
-	        // // get current srcs and data from state
-	        // var newSrcs = context.state.srcs;
-	        // var newData = context.state.data;
-	        //
-	        // // push download link and data to the current src/data array
-	        // newSrcs.push(directDownloadLink);
-	        // newData.push(searchResult[0]);
-	        // console.log('searchResult : ', searchResult[0]);
-	        //
-	        // // set the state to the newSrc/newData
-	        // context.setState({
-	        //   srcs: newSrcs,
-	        //   data: newData
-	        // });
-	        //
-	        // // if there is no current song,
-	        // if ( context.state.currentSong === null ) {
-	        //   console.log('set directDownloadLink');
-	        //   // set the state to the current download link
-	        //   context.setState({
-	        //     currentSong: directDownloadLink
-	        //   });
-	        // };
-	        // console.log('new song : ', directDownloadLink);
 	      }).catch(function (err) {
 	        console.log('youtube search fail', err);
 	      });
@@ -21765,8 +21732,23 @@
 	          console.log('play next song!', currentSongIndex);
 	        }.bind(this);
 	        // plat next song after 2 secs
-	        setTimeout(setNextSong, 2000);
+	        setTimeout(setNextSong, 1000);
 	      }
+	    }
+	  }, {
+	    key: 'playSong',
+	    value: function playSong(index) {
+	      this.setState({
+	        currentSong: null
+	      });
+
+	      var setNextSong = function () {
+	        this.setState({
+	          currentSong: this.state.srcs[index]
+	        });
+	      }.bind(this);
+	      // plat next song after 2 secs
+	      setTimeout(setNextSong, 1000);
 	    }
 
 	    // handle search clicks
@@ -21778,19 +21760,19 @@
 
 	      var searchResult = this.state.searchResults;
 
-	      console.log('whats the index', index);
 	      var selectedSongId = searchResult[index].id.videoId;
 	      // if the ID is undefined, no video exists
 	      console.log(selectedSongId === undefined);
 	      // end the request if the song doesn't exist
-	      if (!selectedSongId) {
-	        return;
-	      }
 	      // get youtube URL
 	      var selectedSongUrl = 'https://www.youtube.com/watch?v=' + selectedSongId;
 	      // create the direct DownloadLink, which requires the youtube URL
 	      var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + selectedSongUrl;
 
+	      if (!selectedSongId || context.state.srcs.indexOf(directDownloadLink) !== -1) {
+	        alert('This song is already on the playlist!');
+	        return;
+	      }
 	      // get current srcs and data from state
 	      var newSrcs = context.state.srcs;
 	      var newData = context.state.data;
@@ -21816,22 +21798,16 @@
 	      };
 	      console.log('new song : ', directDownloadLink);
 	    }
-
-	    // CREATE AS COMPONENT
-	    // render the music player with the current song's src
-
 	  }, {
-	    key: 'renderAudios',
-	    value: function renderAudios() {
-	      if (this.state.currentSong !== null) {
-	        return _react2.default.createElement(
-	          'audio',
-	          { preload: 'auto', controls: true, autoPlay: 'true', onEnded: this.playNextSong.bind(this) },
-	          _react2.default.createElement('source', { src: this.state.currentSong, type: 'audio/mp3' })
-	        );
-	      }
+	    key: 'handlePlay',
+	    value: function handlePlay(index) {
+	      this.playSong(index);
 	    }
-
+	  }, {
+	    key: 'handleRemove',
+	    value: function handleRemove() {
+	      console.log('clicking remove');
+	    }
 	    // updating state's value to the user's query
 
 	  }, {
@@ -21863,8 +21839,8 @@
 	        null,
 	        _react2.default.createElement('img', { className: 'logo', src: 'static/images/DJ-DJ.png' }),
 	        _react2.default.createElement(_SearchBar2.default, { handleChange: this.handleChange.bind(this), getYoutubeSong: this.getYoutubeSong.bind(this) }),
-	        _react2.default.createElement(Audios, { renderAudios: this.renderAudios.bind(this) }),
-	        _react2.default.createElement(_SongList2.default, { data: this.state.data }),
+	        _react2.default.createElement(_Audio2.default, { currentSong: this.state.currentSong, playNextSong: this.playNextSong.bind(this) }),
+	        _react2.default.createElement(_SongList2.default, { data: this.state.data, handlePlay: this.handlePlay.bind(this), handleRemove: this.handleRemove.bind(this) }),
 	        _react2.default.createElement(_Search2.default, { searchResults: this.state.searchResults, handleSearchClicks: this.handleSearchClicks.bind(this) })
 	      );
 	    }
@@ -21899,8 +21875,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SongList = function SongList(_ref) {
-		var data = _ref.data;
+	var SongList = function SongList(props) {
 		return _react2.default.createElement(
 			'div',
 			{ className: 'playlist-group' },
@@ -21909,7 +21884,7 @@
 				{ className: 'playlist-title' },
 				'Playlist'
 			),
-			_react2.default.createElement(_Playlist2.default, { data: data })
+			_react2.default.createElement(_Playlist2.default, { data: props.data, handlePlay: props.handlePlay, handleRemove: props.handleRemove })
 		);
 	};
 
@@ -21931,18 +21906,29 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Song = function Song(_ref) {
-	  var datum = _ref.datum;
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    _react2.default.createElement('img', { className: 'thumbnail', src: datum.snippet.thumbnails.default.url }),
-	    _react2.default.createElement(
+	var Song = function Song(props) {
+	   return _react2.default.createElement(
 	      'li',
-	      { className: 'list-group-item song' },
-	      datum.snippet.title
-	    )
-	  );
+	      null,
+	      _react2.default.createElement('img', { className: 'thumbnail', src: props.datum.snippet.thumbnails.default.url }),
+	      _react2.default.createElement(
+	         'button',
+	         { onClick: function onClick() {
+	               props.handlePlay(props.index);
+	            }, className: 'playSong' },
+	         'Play'
+	      ),
+	      _react2.default.createElement(
+	         'button',
+	         { onClick: props.handleRemove, className: 'removeSong' },
+	         'Remove'
+	      ),
+	      _react2.default.createElement(
+	         'span',
+	         { className: 'list-group-item song' },
+	         props.datum.snippet.title
+	      )
+	   );
 	};
 	module.exports = Song;
 
@@ -26971,13 +26957,42 @@
 	      'ul',
 	      { className: 'list-group' },
 	      props.data.map(function (datum, i) {
-	        return _react2.default.createElement(_Song2.default, { datum: datum, key: i });
+	        return _react2.default.createElement(_Song2.default, { datum: datum, index: i, handlePlay: props.handlePlay, handleRemove: props.handleRemove });
 	      })
 	    )
 	  );
 	};
 
 	module.exports = Playlist;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var AudioPlayer = function AudioPlayer(props) {
+	  if (props.currentSong !== null) {
+	    return _react2.default.createElement(
+	      'audio',
+	      { preload: 'auto', controls: true, autoPlay: 'true', onEnded: props.playNextSong },
+	      _react2.default.createElement('source', { src: props.currentSong, type: 'audio/mp3' })
+	    );
+	  }
+	  return null;
+	};
+
+	module.exports = AudioPlayer;
 
 /***/ }
 /******/ ]);

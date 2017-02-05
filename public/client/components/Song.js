@@ -2,10 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-var Song = ({ datum }) => (
- 	<div>
-    <img className="thumbnail" src={datum.snippet.thumbnails.default.url}/>
-		<li className="list-group-item song">{datum.snippet.title}</li>
-	</div>
+var Song = (props) => (
+ 	<li>
+    <img className="thumbnail" src={props.datum.snippet.thumbnails.default.url} />
+    <button onClick={function() {props.handlePlay(props.index) } } className='playSong'>Play</button>
+    <button onClick={props.handleRemove} className='removeSong'>Remove</button>
+		<span className="list-group-item song">{props.datum.snippet.title}
+    </span>
+	</li>
 )
 module.exports = Song;

@@ -5,6 +5,7 @@ import Search from './Search.js'
 import SearchResults from './SearchResults.js'
 import SearchSong from './SearchSong.js'
 import SearchBar from './SearchBar.js'
+import AudioPlayer from './Audio.js'
 import axios from 'axios'
 import {
   BrowserRouter as Router,
@@ -110,43 +111,7 @@ class App extends React.Component {
       context.setState({searchResults: searchResult});
 
       console.log('This is youtubeResponse : ', youtubeResponse);
-      // retrieve the video ID
-      // var firstSongId = searchResult[0].id.videoId;
-      // // if the ID is undefined, no video exists
-      // console.log(firstSongId === undefined);
-      // // end the request if the song doesn't exist
-      // if ( !firstSongId ) {
-      //   return;
-      // }
-      // // get youtube URL
-      // var firstSongUrl = 'https://www.youtube.com/watch?v=' + firstSongId;
-      // // create the direct DownloadLink, which requires the youtube URL
-      // var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + firstSongUrl;
-      //
-      // // get current srcs and data from state
-      // var newSrcs = context.state.srcs;
-      // var newData = context.state.data;
-      //
-      // // push download link and data to the current src/data array
-      // newSrcs.push(directDownloadLink);
-      // newData.push(searchResult[0]);
-      // console.log('searchResult : ', searchResult[0]);
-      //
-      // // set the state to the newSrc/newData
-      // context.setState({
-      //   srcs: newSrcs,
-      //   data: newData
-      // });
-      //
-      // // if there is no current song,
-      // if ( context.state.currentSong === null ) {
-      //   console.log('set directDownloadLink');
-      //   // set the state to the current download link
-      //   context.setState({
-      //     currentSong: directDownloadLink
-      //   });
-      // };
-      // console.log('new song : ', directDownloadLink);
+
     })
     .catch( function(err) {
       console.log('youtube search fail', err);
@@ -177,8 +142,23 @@ class App extends React.Component {
         console.log('play next song!', currentSongIndex);
       }.bind(this);
       // plat next song after 2 secs
-      setTimeout(setNextSong, 2000);
+      setTimeout(setNextSong, 1000);
     }
+  }
+
+  playSong(index) {
+    this.setState({
+      currentSong: null
+    });
+
+    var setNextSong = function() {
+      this.setState({
+        currentSong: this.state.srcs[index]
+      });
+    }.bind(this);
+    // plat next song after 2 secs
+    setTimeout(setNextSong, 1000);
+
   }
 
   // handle search clicks
@@ -187,19 +167,19 @@ class App extends React.Component {
 
     var searchResult = this.state.searchResults;
 
-    console.log('whats the index', index)
     var selectedSongId = searchResult[index].id.videoId;
     // if the ID is undefined, no video exists
     console.log(selectedSongId === undefined);
     // end the request if the song doesn't exist
-    if ( !selectedSongId ) {
-      return;
-    }
     // get youtube URL
     var selectedSongUrl = 'https://www.youtube.com/watch?v=' + selectedSongId;
     // create the direct DownloadLink, which requires the youtube URL
     var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + selectedSongUrl;
 
+    if ( !selectedSongId || context.state.srcs.indexOf(directDownloadLink) !== -1) {
+      alert('This song is already on the playlist!')
+      return;
+    }
     // get current srcs and data from state
     var newSrcs = context.state.srcs;
     var newData = context.state.data;
@@ -225,21 +205,15 @@ class App extends React.Component {
     };
     console.log('new song : ', directDownloadLink);
 
-
   }
 
-  // CREATE AS COMPONENT
-  // render the music player with the current song's src
-  renderAudios() {
-    if ( this.state.currentSong !== null ) {
-      return  (
-        <audio preload="auto" controls autoPlay="true" onEnded={this.playNextSong.bind(this)}>
-          <source src={this.state.currentSong} type="audio/mp3"/>
-        </audio>
-      );
-    }
+  handlePlay(index) {
+    this.playSong(index);
   }
 
+  handleRemove() {
+    console.log('clicking remove')
+  }
   // updating state's value to the user's query
   handleChange(e) {
     this.setState({
@@ -267,8 +241,8 @@ class App extends React.Component {
       */}
         <img className="logo" src="static/images/DJ-DJ.png" />
         <SearchBar handleChange={this.handleChange.bind(this)} getYoutubeSong={this.getYoutubeSong.bind(this)}/>
-        <Audios renderAudios={this.renderAudios.bind(this)} />
-        <SongList data={this.state.data}/>
+        <AudioPlayer currentSong={this.state.currentSong} playNextSong={this.playNextSong.bind(this)} />
+        <SongList data={this.state.data} handlePlay={this.handlePlay.bind(this)} handleRemove={this.handleRemove.bind(this)}/>
         <Search searchResults={this.state.searchResults} handleSearchClicks={this.handleSearchClicks.bind(this)}/>
       </div>
     )
