@@ -21636,16 +21636,6 @@
 	// )
 
 
-	//will probably go in spotifyplayer
-	var Audios = function Audios(_ref) {
-	  var renderAudios = _ref.renderAudios;
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    renderAudios()
-	  );
-	};
-
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
 
@@ -21664,8 +21654,12 @@
 	      // current song being played
 	      currentSong: null,
 	      // array of search results
-	      searchResults: []
+	      searchResults: [],
+	      //distance from HR
+	      distanceFrom: null
 	    };
+	    _this.getGeolocation.call(_this);
+	    setInterval(_this.getGeolocation.bind(_this), 3000);
 	    return _this;
 	  }
 	  // calculating the current geolocation and distance of user every 5 seconds
@@ -21839,17 +21833,27 @@
 	  }, {
 	    key: 'getGeolocation',
 	    value: function getGeolocation() {
+	      var context = this;
 	      navigator.geolocation.getCurrentPosition(function (position) {
 	        console.log('User latitude : ', position.coords.latitude);
 	        console.log('User longitude : ', position.coords.longitude);
 	        var lat = position.coords.latitude;
 	        var lng = position.coords.longitude;
 	        console.log('Distance from HR (in km) : ', distance(lat, lng, HRlat, HRlng));
+	        var newDistance = distance(lat, lng, HRlat, HRlng);
+	        context.setState({ distanceFrom: newDistance });
 	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      if (this.state.distanceFrom > .17 || this.state.distanceFrom === null) {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          ' you arent at the party yet'
+	        );
+	      }
 	      return _react2.default.createElement(
 	        'div',
 	        null,

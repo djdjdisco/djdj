@@ -58,14 +58,6 @@ const HRlng = -122.4111553;
 
 
 
-
-//will probably go in spotifyplayer
-var Audios = ({ renderAudios }) => (
-  <div>
-    {renderAudios()}
-  </div>
-);
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -79,8 +71,12 @@ class App extends React.Component {
       // current song being played
       currentSong: null,
       // array of search results
-      searchResults: []
-    }
+      searchResults: [],
+      //distance from HR
+      distanceFrom: null
+    };
+    this.getGeolocation.call(this);
+    setInterval(this.getGeolocation.bind(this), 3000);
   }
     // calculating the current geolocation and distance of user every 5 seconds
     // setInterval(this.getGeolocation.bind(this), 5000);
@@ -240,28 +236,32 @@ class App extends React.Component {
 
   // Track user's geolocation
   getGeolocation() {
+    var context = this;
     navigator.geolocation.getCurrentPosition(function(position) {
       console.log('User latitude : ', position.coords.latitude);
       console.log('User longitude : ', position.coords.longitude);
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
       console.log('Distance from HR (in km) : ', distance(lat, lng, HRlat, HRlng));
+      var newDistance = distance(lat, lng, HRlat, HRlng)
+      context.setState({distanceFrom: newDistance})
     });
   }
 
   render() {
+    if (this.state.distanceFrom > .17 || this.state.distanceFrom === null) {
+      return (
+        <div> you arent at the party yet</div>
+      )
+    }
     return (
       <div>
-
-{/*        <SpotifyPlayer />
-        <SongList />
-      */}
         <img className="logo" src="static/images/DJ-DJ.png" />
         <SearchBar handleChange={this.handleChange.bind(this)} getYoutubeSong={this.getYoutubeSong.bind(this)}/>
         <AudioPlayer currentSong={this.state.currentSong} playNextSong={this.playNextSong.bind(this)} />
         <SongList data={this.state.data} srcs={this.state.srcs} handlePlay={this.handlePlay.bind(this)} handleRemove={this.handleRemove.bind(this)}/>
         <Search searchResults={this.state.searchResults} handleSearchClicks={this.handleSearchClicks.bind(this)}/>
-      </div>
+    </div>
     )
   }
 }
