@@ -1,17 +1,20 @@
 var Promise = require('bluebird');
-bcrypt = Promise.promisifyAll(require('bcrypt'));
+bcrypt = Promise.promisifyAll(require('bcrypt'), { multiArgs: true} );
+var axios = require('axios');
 
 var authData = {};
 const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
 
+
+//how to access original password input
 var checkUser = function(req, res, next) {
-  var username = req.query.username;
-  var plainPassword = req.query.password;
+  var username = req.body.username;
+  var plainPassword = req.body.password;
   console.log(username, plainPassword);
-  console.log(authData[username]);
-  bcrypt.compare(plainPassword, authData[username])
+  res.redirect('/login')
+  bcrypt.compare(plainPassword, req.query.password)
   .then( function(isAuthenticated) {
     console.log('Is this user authenticated ? ', isAuthenticated);
     if ( isAuthenticated  ) {
@@ -37,6 +40,7 @@ var hashPassword = function(username, plainPassword, cb) {
 };
 
 var savePassword = function(username, hashedPassword) {
+  //here we need to query insert to the db
   authData[username] = hashedPassword;
 };
 

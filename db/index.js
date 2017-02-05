@@ -1,4 +1,6 @@
 var Sequelize = require('sequelize');
+var Promise = require('bluebird');
+// bcrypt = Promise.promisifyAll(require('bcrypt'), {multiArgs:true});
 
 // var orm = new Sequelize('postgres://localhost:3000/djsdj');
 //use this for when we deploy
@@ -9,38 +11,65 @@ var orm = new Sequelize('djsdj', null, null, {
 	  port: 5432
 	});
 
-
 var Song = orm.define('song', {
 	title: Sequelize.STRING,
 	artist: Sequelize.STRING,
 	img: Sequelize.STRING,
-	song_url: Sequelize.STRING
+	songrl: Sequelize.STRING
+},
+{
+	timestamps: false
 });
 
-//a table for storing DJ's token
-var DJ = orm.define('dj', {
-	master_token: Sequelize.STRING,
-	refresh_token: Sequelize.STRING
-})
-
-var Playlist = orm.define('playlist', {
-	name: Sequelize.STRING
-});
+// var Playlist = orm.define('playlist', {
+// 	name: Sequelize.STRING
+// });
 
 var User = orm.define('user', {
-	user_name: Sequelize.STRING,
+	username: Sequelize.STRING,
 	password: Sequelize.STRING
-})
+},
+{
+	timestamps: false
+});
 
-Song.belongsToMany(Playlist, {through: 'userPlaylist'});
-Playlist.hasMany(Song);
+
+
+// {
+// 	timestamps: false,
+//   classMethods: {
+//     generateHash: function(plainPassword) {
+//     	console.log('inside generateHash');
+//       	bcrypt.hash(plainPassword[0], 10)
+//       	.then( function(hashPassword) {
+//       		console.log('inside then');
+//       		return [hashPassword];
+//       	})
+// 			  .catch( function(err) {
+// 			    console.log('There is error in hashPassword', err);
+// 			  });
+//       		console.log('before hey');
+// 			  // return ['hey'];
+//     },
+//     validPassword: function(plainPassword, hash) {
+//       return bcrypt.compare(plainPassword, hash)
+//       	.catch( function(err) {
+//       		console.log('There is an error in validating password, ', err);
+//       	});
+//     },
+// 	}
+// }
+
+//PAST MVP: we can use these relations to create multiple playlists
+// Song.belongsToMany(Playlist, {through: 'userPlaylist'});
+// Playlist.hasMany(Song);
 /*define relations for user and DJ
 In current scope of MVP, the user objects are just used for auth, no relations
 */
 
 
 module.exports.con = orm;
+
 module.exports.Song = Song;
-module.exports.DJ = DJ;
-module.exports.Playlist = Playlist;
 module.exports.User = User;
+// module.exports.Playlist = Playlist;

@@ -8,16 +8,14 @@ var util = require('./util');
 
 // var session = require('express-session');
 var db = require('../db/index.js');
+var routes = require('./routes.js');
 
 var app = express();
 
 
 db.Song.sync();
-db.DJ.sync();
-db.Playlist.sync();
+// db.Playlist.sync();
 db.User.sync();
-
-
 
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
@@ -33,6 +31,9 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: true }
 }));
+
+app.use('/api/', routes);
+
 // all static files/modules being served
 app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
 app.use('/static', express.static(path.join(__dirname, '../public')));
@@ -63,7 +64,8 @@ app.post('/signup', function(req, res) {
   if ( !util.authData[username] ) {
     util.hashPassword(username, password, function(hashedPassword) {
       util.savePassword(username, hashedPassword);
-      res.redirect('/?username=' + username + '&password=' + password);
+      //res.query
+      res.redirect('/api/signup/?username=' + username + '&password=' + hashedPassword);
     });
   } else {
     res.redirect('/login');    
