@@ -21567,15 +21567,19 @@
 
 	var _SearchSong2 = _interopRequireDefault(_SearchSong);
 
-	var _SpotifyPlayer = __webpack_require__(185);
+	var _SearchBar = __webpack_require__(187);
 
-	var _SpotifyPlayer2 = _interopRequireDefault(_SpotifyPlayer);
+	var _SearchBar2 = _interopRequireDefault(_SearchBar);
 
-	var _axios = __webpack_require__(186);
+	var _Audio = __webpack_require__(251);
+
+	var _Audio2 = _interopRequireDefault(_Audio);
+
+	var _axios = __webpack_require__(188);
 
 	var _axios2 = _interopRequireDefault(_axios);
 
-	var _reactRouterDom = __webpack_require__(211);
+	var _reactRouterDom = __webpack_require__(213);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21583,8 +21587,7 @@
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //NOT USING THIS COMPONENT
-
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	// Function calculates the distance between two lat/long points for our geolocation feature
 	function distance(lat1, lon1, lat2, lon2) {
@@ -21626,16 +21629,6 @@
 	// )
 
 
-	//will probably go in spotifyplayer
-	var Audios = function Audios(_ref) {
-	  var renderAudios = _ref.renderAudios;
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    renderAudios()
-	  );
-	};
-
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
 
@@ -21652,12 +21645,18 @@
 	      // array of video data (image url and title)
 	      data: [],
 	      // current song being played
-	      currentSong: null
+	      currentSong: null,
+	      // array of search results
+	      searchResults: [],
+	      //distance from HR
+	      distanceFrom: null
 	    };
+	    _this.getGeolocation.call(_this);
+	    setInterval(_this.getGeolocation.bind(_this), 3000);
 	    return _this;
 	  }
 	  // calculating the current geolocation and distance of user every 5 seconds
-	  // setInterval(this.getGeolocation.bind(this), 5000); 
+	  // setInterval(this.getGeolocation.bind(this), 5000);
 
 	  // Function to send a GET request to youtube's api w/ user's query on submit
 
@@ -21667,7 +21666,7 @@
 	    value: function getYoutubeSong(e) {
 	      // prevents page from refreshing
 	      e.preventDefault();
-	      // saving context of this for axios request 
+	      // saving context of this for axios request
 	      var context = this;
 	      // sending a GET request to youtube
 	      (0, _axios2.default)({
@@ -21675,53 +21674,19 @@
 	        method: 'get',
 	        params: {
 	          part: 'snippet',
-	          // remember to hide the key to a variable! 
+	          // remember to hide the key to a variable!
 	          key: 'AIzaSyCqOGwWGNq5ZncRXMRupT5aOn0yadXvi78',
 	          q: context.state.value
 	        }
 	      }).then(function (youtubeResponse) {
 	        // wait for Youtube res to come back
 	        console.log('youtube search success!');
-	        // grab the array of videos, which live in data.items 
+	        // grab the array of videos, which live in data.items
 	        var searchResult = youtubeResponse.data.items;
+
+	        context.setState({ searchResults: searchResult });
+
 	        console.log('This is youtubeResponse : ', youtubeResponse);
-	        // retrieve the video ID 
-	        var firstSongId = searchResult[0].id.videoId;
-	        // if the ID is undefined, no video exists
-	        console.log(firstSongId === undefined);
-	        // end the request if the song doesn't exist 
-	        if (!firstSongId) {
-	          return;
-	        }
-	        // get youtube URL 
-	        var firstSongUrl = 'https://www.youtube.com/watch?v=' + firstSongId;
-	        // create the direct DownloadLink, which requires the youtube URL
-	        var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + firstSongUrl;
-
-	        // get current srcs and data from state
-	        var newSrcs = context.state.srcs;
-	        var newData = context.state.data;
-
-	        // push download link and data to the current src/data array
-	        newSrcs.push(directDownloadLink);
-	        newData.push(searchResult[0]);
-	        console.log('searchResult : ', searchResult[0]);
-
-	        // set the state to the newSrc/newData
-	        context.setState({
-	          srcs: newSrcs,
-	          data: newData
-	        });
-
-	        // if there is no current song,
-	        if (context.state.currentSong === null) {
-	          console.log('set directDownloadLink');
-	          // set the state to the current download link
-	          context.setState({
-	            currentSong: directDownloadLink
-	          });
-	        };
-	        console.log('new song : ', directDownloadLink);
 	      }).catch(function (err) {
 	        console.log('youtube search fail', err);
 	      });
@@ -21746,7 +21711,7 @@
 
 	      // make sure current song is not the last song
 	      if (currentSongIndex < this.state.srcs.length - 1) {
-	        // function to set next song 
+	        // function to set next song
 	        var setNextSong = function () {
 	          this.setState({
 	            currentSong: this.state.srcs[currentSongIndex + 1]
@@ -21754,25 +21719,98 @@
 	          console.log('play next song!', currentSongIndex);
 	        }.bind(this);
 	        // plat next song after 2 secs
-	        setTimeout(setNextSong, 2000);
+	        setTimeout(setNextSong, 1000);
 	      }
 	    }
+	  }, {
+	    key: 'playSong',
+	    value: function playSong(index) {
+	      this.setState({
+	        currentSong: null
+	      });
 
-	    // CREATE AS COMPONENT 
-	    // render the music player with the current song's src
+	      var setNextSong = function () {
+	        this.setState({
+	          currentSong: this.state.srcs[index]
+	        });
+	      }.bind(this);
+	      // plat next song after 2 secs
+	      setTimeout(setNextSong, 1000);
+	    }
+
+	    // handle search clicks
 
 	  }, {
-	    key: 'renderAudios',
-	    value: function renderAudios() {
-	      if (this.state.currentSong !== null) {
-	        return _react2.default.createElement(
-	          'audio',
-	          { preload: 'auto', controls: true, autoPlay: 'true', onEnded: this.playNextSong.bind(this) },
-	          _react2.default.createElement('source', { src: this.state.currentSong, type: 'audio/mp3' })
-	        );
+	    key: 'handleSearchClicks',
+	    value: function handleSearchClicks(index) {
+	      var context = this;
+
+	      var searchResult = this.state.searchResults;
+
+	      var selectedSongId = searchResult[index].id.videoId;
+	      // if the ID is undefined, no video exists
+	      console.log(selectedSongId === undefined);
+	      // end the request if the song doesn't exist
+	      // get youtube URL
+	      var selectedSongUrl = 'https://www.youtube.com/watch?v=' + selectedSongId;
+	      // create the direct DownloadLink, which requires the youtube URL
+	      var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + selectedSongUrl;
+
+	      if (!selectedSongId || context.state.srcs.indexOf(directDownloadLink) !== -1) {
+	        alert('This song is already on the playlist!');
+	        return;
+	      }
+	      // get current srcs and data from state
+	      var newSrcs = context.state.srcs;
+	      var newData = context.state.data;
+
+	      // push download link and data to the current src/data array
+	      newSrcs.push(directDownloadLink);
+	      newData.push(searchResult[index]);
+	      console.log('searchResult : ', searchResult[index]);
+
+	      // set the state to the newSrc/newData
+	      context.setState({
+	        srcs: newSrcs,
+	        data: newData
+	      });
+
+	      // if there is no current song,
+	      if (context.state.currentSong === null) {
+	        console.log('set directDownloadLink');
+	        // set the state to the current download link
+	        context.setState({
+	          currentSong: directDownloadLink
+	        });
+	      };
+	      console.log('new song : ', directDownloadLink);
+	    }
+	  }, {
+	    key: 'handlePlay',
+	    value: function handlePlay(index) {
+	      this.playSong(index);
+	    }
+	  }, {
+	    key: 'handleRemove',
+	    value: function handleRemove(index) {
+	      console.log('clicking remove');
+	      var newSrc = this.state.srcs;
+	      var newData = this.state.data;
+	      var clickedSrc = newSrc[index];
+	      newSrc.splice(index, 1);
+	      newData.splice(index, 1);
+	      console.log('newsrc', newSrc);
+	      this.setState({
+	        srcs: newSrc,
+	        data: newData
+	      });
+
+	      // if the index being removed is the current song playing
+	      if (this.state.currentSong === clickedSrc) {
+	        // play the next song
+	        this.playNextSong();
 	      }
 	    }
-
 	    // updating state's value to the user's query
 
 	  }, {
@@ -21783,64 +21821,40 @@
 	      });
 	    }
 
-	    // CREATE AS COMPONENT?
-	    // render playlist 
-
-	  }, {
-	    key: 'renderPlayList',
-	    value: function renderPlayList(Song) {
-	      return _react2.default.createElement(
-	        'ul',
-	        { className: 'list-group' },
-	        this.state.data.map(function (data, i) {
-	          return _react2.default.createElement(Song, { data: data, key: i });
-	        })
-	      );
-	    }
-
-	    //function to render search results
-	    // renderSearchResults(SearchSong) {
-	    //   return (
-	    //     <ul className='list-group'>
-	    //       {this.state.data.map(function(data, i) {
-	    //         return (
-	    //           <SearchSong data={data} key={i} />
-	    //         );
-	    //       })}
-	    //     </ul>
-	    //   )
-	    // }
-
-
-	    // Track user's geolocation 
+	    // Track user's geolocation
 
 	  }, {
 	    key: 'getGeolocation',
 	    value: function getGeolocation() {
+	      var context = this;
 	      navigator.geolocation.getCurrentPosition(function (position) {
 	        console.log('User latitude : ', position.coords.latitude);
 	        console.log('User longitude : ', position.coords.longitude);
 	        var lat = position.coords.latitude;
 	        var lng = position.coords.longitude;
 	        console.log('Distance from HR (in km) : ', distance(lat, lng, HRlat, HRlng));
+	        var newDistance = distance(lat, lng, HRlat, HRlng);
+	        context.setState({ distanceFrom: newDistance });
 	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      if (this.state.distanceFrom > .17 || this.state.distanceFrom === null) {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          ' you arent at the party yet'
+	        );
+	      }
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement('img', { className: 'logo', src: 'static/images/DJ-DJ.png' }),
-	        _react2.default.createElement(
-	          'form',
-	          { className: 'form-inline', onSubmit: this.getYoutubeSong.bind(this) },
-	          _react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Add a song to the playlist!', onChange: this.handleChange.bind(this) }),
-	          _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
-	        ),
-	        _react2.default.createElement(Audios, { renderAudios: this.renderAudios.bind(this) }),
-	        _react2.default.createElement(_SongList2.default, { renderPlayList: this.renderPlayList.bind(this) }),
-	        _react2.default.createElement(_Search2.default, null)
+	        _react2.default.createElement(_SearchBar2.default, { handleChange: this.handleChange.bind(this), getYoutubeSong: this.getYoutubeSong.bind(this) }),
+	        _react2.default.createElement(_Audio2.default, { currentSong: this.state.currentSong, playNextSong: this.playNextSong.bind(this) }),
+	        _react2.default.createElement(_SongList2.default, { data: this.state.data, srcs: this.state.srcs, handlePlay: this.handlePlay.bind(this), handleRemove: this.handleRemove.bind(this) }),
+	        _react2.default.createElement(_Search2.default, { searchResults: this.state.searchResults, handleSearchClicks: this.handleSearchClicks.bind(this) })
 	      );
 	    }
 	  }]);
@@ -21868,10 +21882,13 @@
 
 	var _Song2 = _interopRequireDefault(_Song);
 
+	var _Playlist = __webpack_require__(250);
+
+	var _Playlist2 = _interopRequireDefault(_Playlist);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SongList = function SongList(_ref) {
-		var renderPlayList = _ref.renderPlayList;
+	var SongList = function SongList(props) {
 		return _react2.default.createElement(
 			'div',
 			{ className: 'playlist-group' },
@@ -21880,7 +21897,7 @@
 				{ className: 'playlist-title' },
 				'Playlist'
 			),
-			renderPlayList(_Song2.default)
+			_react2.default.createElement(_Playlist2.default, { data: props.data, handlePlay: props.handlePlay, handleRemove: props.handleRemove })
 		);
 	};
 
@@ -21902,18 +21919,31 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Song = function Song(_ref) {
-	  var data = _ref.data;
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    _react2.default.createElement('img', { className: 'thumbnail', src: data.snippet.thumbnails.default.url }),
-	    _react2.default.createElement(
+	var Song = function Song(props) {
+	   return _react2.default.createElement(
 	      'li',
-	      { className: 'list-group-item song' },
-	      data.snippet.title
-	    )
-	  );
+	      null,
+	      _react2.default.createElement('img', { className: 'thumbnail', src: props.datum.snippet.thumbnails.default.url }),
+	      _react2.default.createElement(
+	         'button',
+	         { onClick: function onClick() {
+	               props.handlePlay(props.index);
+	            }, className: 'playSong' },
+	         'Play'
+	      ),
+	      _react2.default.createElement(
+	         'button',
+	         { onClick: function onClick() {
+	               props.handleRemove(props.index);
+	            }, className: 'removeSong' },
+	         'Remove'
+	      ),
+	      _react2.default.createElement(
+	         'span',
+	         { className: 'list-group-item song' },
+	         props.datum.snippet.title
+	      )
+	   );
 	};
 	module.exports = Song;
 
@@ -21922,8 +21952,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
 
@@ -21941,59 +21969,19 @@
 
 	var _SearchSong2 = _interopRequireDefault(_SearchSong);
 
-	var _SearchBar = __webpack_require__(184);
+	var _SearchBar = __webpack_require__(187);
 
 	var _SearchBar2 = _interopRequireDefault(_SearchBar);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Search = function (_React$Component) {
-	  _inherits(Search, _React$Component);
-
-	  function Search(props) {
-	    _classCallCheck(this, Search);
-
-	    var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
-
-	    _this.state = {
-	      hovering: false
-	    };
-	    return _this;
-	  }
-
-	  _createClass(Search, [{
-	    key: 'onSearchSongMouseEnter',
-	    value: function onSearchSongMouseEnter() {
-	      this.setState({
-	        hovering: true
-	      });
-	    }
-	  }, {
-	    key: 'onSearchSongMouseLeave',
-	    value: function onSearchSongMouseLeave() {
-	      this.setState({
-	        hovering: false
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'search-group' },
-	        _react2.default.createElement(_SearchResults2.default, null)
-	      );
-	    }
-	  }]);
-
-	  return Search;
-	}(_react2.default.Component);
+	var Search = function Search(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'search-group' },
+	    _react2.default.createElement(_SearchResults2.default, { searchResults: props.searchResults, handleSearchClicks: props.handleSearchClicks })
+	  );
+	};
 
 	module.exports = Search;
 
@@ -22017,8 +22005,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchResults = function SearchResults(_ref) {
-		var renderSear = _ref.renderSear;
+	var SearchResults = function SearchResults(props) {
 		return _react2.default.createElement(
 			'div',
 			null,
@@ -22030,7 +22017,9 @@
 			_react2.default.createElement(
 				'ul',
 				{ className: 'list-group' },
-				_react2.default.createElement(_SearchSong2.default, null)
+				props.searchResults.map(function (song, i) {
+					return _react2.default.createElement(_SearchSong2.default, { index: i, song: song, handleSearchClicks: props.handleSearchClicks });
+				})
 			)
 		);
 	};
@@ -22053,8 +22042,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchSong = function SearchSong(_ref) {
-		var data = _ref.data;
+	var SearchSong = function SearchSong(props) {
 		return (
 			//need to inherit song info from parent
 			//two ways of making the song model - as a link and as a button  --> used to be line 9 <img className="thumbnail" src="#"/>
@@ -22065,7 +22053,15 @@
 				_react2.default.createElement(
 					'li',
 					{ className: 'list-group-item song' },
-					'data.snippet.title'
+					_react2.default.createElement(
+						'button',
+						{ onClick: function onClick() {
+								props.handleSearchClicks(props.index);
+							}
+						},
+						'Add'
+					),
+					props.song.snippet.title
 				)
 			)
 		);
@@ -22074,7 +22070,10 @@
 	module.exports = SearchSong;
 
 /***/ },
-/* 184 */
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22089,105 +22088,35 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchBar = function SearchBar() {
+	var SearchBar = function SearchBar(props) {
 		return _react2.default.createElement(
 			'form',
-			{ className: 'form-inline' },
-			_react2.default.createElement(
-				'div',
-				{ className: 'form-group' },
-				_react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Add a song to our playlist!' }),
-				_react2.default.createElement(
-					'button',
-					{ className: 'btn' },
-					'Search'
-				)
-			)
+			{ className: 'form-inline', onSubmit: props.getYoutubeSong },
+			_react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Add a song to the playlist!', onChange: props.handleChange }),
+			_react2.default.createElement('input', { type: 'submit', value: 'Submit' })
 		);
 	};
 
 	module.exports = SearchBar;
 
 /***/ },
-/* 185 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(32);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _SearchBar = __webpack_require__(184);
-
-	var _SearchBar2 = _interopRequireDefault(_SearchBar);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SpotifyPlayer = function (_React$Component) {
-		_inherits(SpotifyPlayer, _React$Component);
-
-		function SpotifyPlayer(props) {
-			_classCallCheck(this, SpotifyPlayer);
-
-			return _possibleConstructorReturn(this, (SpotifyPlayer.__proto__ || Object.getPrototypeOf(SpotifyPlayer)).call(this, props));
-		}
-
-		_createClass(SpotifyPlayer, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'div',
-						{ className: 'header' },
-						_react2.default.createElement('iframe', { src: 'https://embed.spotify.com/?uri=spotify:user:djkorean1:playlist:2aDsZ8ZIw5GGCPNfVsWDts&theme=black', width: '600', height: '75', frameborder: '0', allowtransparency: 'true' }),
-						_react2.default.createElement(_SearchBar2.default, null)
-					)
-				);
-			}
-		}]);
-
-		return SpotifyPlayer;
-	}(_react2.default.Component);
-
-	exports.default = SpotifyPlayer;
+	module.exports = __webpack_require__(189);
 
 /***/ },
-/* 186 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(187);
-
-/***/ },
-/* 187 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(188);
-	var bind = __webpack_require__(189);
-	var Axios = __webpack_require__(190);
-	var defaults = __webpack_require__(191);
+	var utils = __webpack_require__(190);
+	var bind = __webpack_require__(191);
+	var Axios = __webpack_require__(192);
+	var defaults = __webpack_require__(193);
 
 	/**
 	 * Create an instance of Axios
@@ -22220,15 +22149,15 @@
 	};
 
 	// Expose Cancel & CancelToken
-	axios.Cancel = __webpack_require__(208);
-	axios.CancelToken = __webpack_require__(209);
-	axios.isCancel = __webpack_require__(205);
+	axios.Cancel = __webpack_require__(210);
+	axios.CancelToken = __webpack_require__(211);
+	axios.isCancel = __webpack_require__(207);
 
 	// Expose all/spread
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(210);
+	axios.spread = __webpack_require__(212);
 
 	module.exports = axios;
 
@@ -22236,14 +22165,14 @@
 	module.exports.default = axios;
 
 /***/ },
-/* 188 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-	var bind = __webpack_require__(189);
+	var bind = __webpack_require__(191);
 
 	/*global toString:true*/
 
@@ -22538,7 +22467,7 @@
 	};
 
 /***/ },
-/* 189 */
+/* 191 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22554,17 +22483,17 @@
 	};
 
 /***/ },
-/* 190 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var defaults = __webpack_require__(191);
-	var utils = __webpack_require__(188);
-	var InterceptorManager = __webpack_require__(202);
-	var dispatchRequest = __webpack_require__(203);
-	var isAbsoluteURL = __webpack_require__(206);
-	var combineURLs = __webpack_require__(207);
+	var defaults = __webpack_require__(193);
+	var utils = __webpack_require__(190);
+	var InterceptorManager = __webpack_require__(204);
+	var dispatchRequest = __webpack_require__(205);
+	var isAbsoluteURL = __webpack_require__(208);
+	var combineURLs = __webpack_require__(209);
 
 	/**
 	 * Create a new instance of Axios
@@ -22644,13 +22573,13 @@
 	module.exports = Axios;
 
 /***/ },
-/* 191 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(188);
-	var normalizeHeaderName = __webpack_require__(192);
+	var utils = __webpack_require__(190);
+	var normalizeHeaderName = __webpack_require__(194);
 
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -22667,10 +22596,10 @@
 	  var adapter;
 	  if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(193);
+	    adapter = __webpack_require__(195);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(193);
+	    adapter = __webpack_require__(195);
 	  }
 	  return adapter;
 	}
@@ -22738,12 +22667,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 192 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(188);
+	var utils = __webpack_require__(190);
 
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -22755,18 +22684,18 @@
 	};
 
 /***/ },
-/* 193 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(188);
-	var settle = __webpack_require__(194);
-	var buildURL = __webpack_require__(197);
-	var parseHeaders = __webpack_require__(198);
-	var isURLSameOrigin = __webpack_require__(199);
-	var createError = __webpack_require__(195);
-	var btoa = typeof window !== 'undefined' && window.btoa && window.btoa.bind(window) || __webpack_require__(200);
+	var utils = __webpack_require__(190);
+	var settle = __webpack_require__(196);
+	var buildURL = __webpack_require__(199);
+	var parseHeaders = __webpack_require__(200);
+	var isURLSameOrigin = __webpack_require__(201);
+	var createError = __webpack_require__(197);
+	var btoa = typeof window !== 'undefined' && window.btoa && window.btoa.bind(window) || __webpack_require__(202);
 
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -22859,7 +22788,7 @@
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(201);
+	      var cookies = __webpack_require__(203);
 
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ? cookies.read(config.xsrfCookieName) : undefined;
@@ -22933,12 +22862,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 194 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var createError = __webpack_require__(195);
+	var createError = __webpack_require__(197);
 
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -22958,12 +22887,12 @@
 	};
 
 /***/ },
-/* 195 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enhanceError = __webpack_require__(196);
+	var enhanceError = __webpack_require__(198);
 
 	/**
 	 * Create an Error with the specified message, config, error code, and response.
@@ -22980,7 +22909,7 @@
 	};
 
 /***/ },
-/* 196 */
+/* 198 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23005,12 +22934,12 @@
 	};
 
 /***/ },
-/* 197 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(188);
+	var utils = __webpack_require__(190);
 
 	function encode(val) {
 	  return encodeURIComponent(val).replace(/%40/gi, '@').replace(/%3A/gi, ':').replace(/%24/g, '$').replace(/%2C/gi, ',').replace(/%20/g, '+').replace(/%5B/gi, '[').replace(/%5D/gi, ']');
@@ -23071,12 +23000,12 @@
 	};
 
 /***/ },
-/* 198 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(188);
+	var utils = __webpack_require__(190);
 
 	/**
 	 * Parse headers into an object
@@ -23115,12 +23044,12 @@
 	};
 
 /***/ },
-/* 199 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(188);
+	var utils = __webpack_require__(190);
 
 	module.exports = utils.isStandardBrowserEnv() ?
 
@@ -23183,7 +23112,7 @@
 	}();
 
 /***/ },
-/* 200 */
+/* 202 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23223,12 +23152,12 @@
 	module.exports = btoa;
 
 /***/ },
-/* 201 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(188);
+	var utils = __webpack_require__(190);
 
 	module.exports = utils.isStandardBrowserEnv() ?
 
@@ -23281,12 +23210,12 @@
 	}();
 
 /***/ },
-/* 202 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(188);
+	var utils = __webpack_require__(190);
 
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -23338,15 +23267,15 @@
 	module.exports = InterceptorManager;
 
 /***/ },
-/* 203 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(188);
-	var transformData = __webpack_require__(204);
-	var isCancel = __webpack_require__(205);
-	var defaults = __webpack_require__(191);
+	var utils = __webpack_require__(190);
+	var transformData = __webpack_require__(206);
+	var isCancel = __webpack_require__(207);
+	var defaults = __webpack_require__(193);
 
 	/**
 	 * Throws a `Cancel` if cancellation has been requested.
@@ -23403,12 +23332,12 @@
 	};
 
 /***/ },
-/* 204 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(188);
+	var utils = __webpack_require__(190);
 
 	/**
 	 * Transform the data for a request or a response
@@ -23428,7 +23357,7 @@
 	};
 
 /***/ },
-/* 205 */
+/* 207 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23438,7 +23367,7 @@
 	};
 
 /***/ },
-/* 206 */
+/* 208 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23459,7 +23388,7 @@
 	};
 
 /***/ },
-/* 207 */
+/* 209 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23477,7 +23406,7 @@
 	};
 
 /***/ },
-/* 208 */
+/* 210 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23502,12 +23431,12 @@
 	module.exports = Cancel;
 
 /***/ },
-/* 209 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Cancel = __webpack_require__(208);
+	var Cancel = __webpack_require__(210);
 
 	/**
 	 * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -23564,7 +23493,7 @@
 	module.exports = CancelToken;
 
 /***/ },
-/* 210 */
+/* 212 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23597,7 +23526,7 @@
 	};
 
 /***/ },
-/* 211 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23605,55 +23534,55 @@
 	exports.__esModule = true;
 	exports.withRouter = exports.matchPath = exports.Switch = exports.StaticRouter = exports.Router = exports.Route = exports.Redirect = exports.Prompt = exports.NavLink = exports.MemoryRouter = exports.Link = exports.HashRouter = exports.BrowserRouter = undefined;
 
-	var _BrowserRouter2 = __webpack_require__(212);
+	var _BrowserRouter2 = __webpack_require__(214);
 
 	var _BrowserRouter3 = _interopRequireDefault(_BrowserRouter2);
 
-	var _HashRouter2 = __webpack_require__(224);
+	var _HashRouter2 = __webpack_require__(226);
 
 	var _HashRouter3 = _interopRequireDefault(_HashRouter2);
 
-	var _Link2 = __webpack_require__(226);
+	var _Link2 = __webpack_require__(228);
 
 	var _Link3 = _interopRequireDefault(_Link2);
 
-	var _MemoryRouter2 = __webpack_require__(227);
+	var _MemoryRouter2 = __webpack_require__(229);
 
 	var _MemoryRouter3 = _interopRequireDefault(_MemoryRouter2);
 
-	var _NavLink2 = __webpack_require__(230);
+	var _NavLink2 = __webpack_require__(232);
 
 	var _NavLink3 = _interopRequireDefault(_NavLink2);
 
-	var _Prompt2 = __webpack_require__(235);
+	var _Prompt2 = __webpack_require__(237);
 
 	var _Prompt3 = _interopRequireDefault(_Prompt2);
 
-	var _Redirect2 = __webpack_require__(237);
+	var _Redirect2 = __webpack_require__(239);
 
 	var _Redirect3 = _interopRequireDefault(_Redirect2);
 
-	var _Route2 = __webpack_require__(239);
+	var _Route2 = __webpack_require__(241);
 
 	var _Route3 = _interopRequireDefault(_Route2);
 
-	var _Router2 = __webpack_require__(240);
+	var _Router2 = __webpack_require__(242);
 
 	var _Router3 = _interopRequireDefault(_Router2);
 
-	var _StaticRouter2 = __webpack_require__(241);
+	var _StaticRouter2 = __webpack_require__(243);
 
 	var _StaticRouter3 = _interopRequireDefault(_StaticRouter2);
 
-	var _Switch2 = __webpack_require__(243);
+	var _Switch2 = __webpack_require__(245);
 
 	var _Switch3 = _interopRequireDefault(_Switch2);
 
-	var _matchPath2 = __webpack_require__(245);
+	var _matchPath2 = __webpack_require__(247);
 
 	var _matchPath3 = _interopRequireDefault(_matchPath2);
 
-	var _withRouter2 = __webpack_require__(246);
+	var _withRouter2 = __webpack_require__(248);
 
 	var _withRouter3 = _interopRequireDefault(_withRouter2);
 
@@ -23676,7 +23605,7 @@
 	exports.withRouter = _withRouter3.default;
 
 /***/ },
-/* 212 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23689,11 +23618,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _createBrowserHistory = __webpack_require__(213);
+	var _createBrowserHistory = __webpack_require__(215);
 
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
-	var _Router = __webpack_require__(223);
+	var _Router = __webpack_require__(225);
 
 	var _Router2 = _interopRequireDefault(_Router);
 
@@ -23754,7 +23683,7 @@
 	exports.default = BrowserRouter;
 
 /***/ },
-/* 213 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -23779,25 +23708,25 @@
 	  }return target;
 	};
 
-	var _warning = __webpack_require__(214);
+	var _warning = __webpack_require__(216);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _invariant = __webpack_require__(215);
+	var _invariant = __webpack_require__(217);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _LocationUtils = __webpack_require__(216);
+	var _LocationUtils = __webpack_require__(218);
 
-	var _PathUtils = __webpack_require__(219);
+	var _PathUtils = __webpack_require__(221);
 
-	var _createTransitionManager = __webpack_require__(220);
+	var _createTransitionManager = __webpack_require__(222);
 
 	var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-	var _ExecutionEnvironment = __webpack_require__(221);
+	var _ExecutionEnvironment = __webpack_require__(223);
 
-	var _DOMUtils = __webpack_require__(222);
+	var _DOMUtils = __webpack_require__(224);
 
 	function _interopRequireDefault(obj) {
 	  return obj && obj.__esModule ? obj : { default: obj };
@@ -24085,7 +24014,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 214 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24144,7 +24073,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 215 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -24198,7 +24127,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 216 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24216,15 +24145,15 @@
 	  }return target;
 	};
 
-	var _resolvePathname = __webpack_require__(217);
+	var _resolvePathname = __webpack_require__(219);
 
 	var _resolvePathname2 = _interopRequireDefault(_resolvePathname);
 
-	var _valueEqual = __webpack_require__(218);
+	var _valueEqual = __webpack_require__(220);
 
 	var _valueEqual2 = _interopRequireDefault(_valueEqual);
 
-	var _PathUtils = __webpack_require__(219);
+	var _PathUtils = __webpack_require__(221);
 
 	function _interopRequireDefault(obj) {
 	  return obj && obj.__esModule ? obj : { default: obj };
@@ -24276,7 +24205,7 @@
 	};
 
 /***/ },
-/* 217 */
+/* 219 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24351,7 +24280,7 @@
 	module.exports = resolvePathname;
 
 /***/ },
-/* 218 */
+/* 220 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24406,7 +24335,7 @@
 	exports.default = valueEqual;
 
 /***/ },
-/* 219 */
+/* 221 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24463,14 +24392,14 @@
 	};
 
 /***/ },
-/* 220 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
 	exports.__esModule = true;
 
-	var _warning = __webpack_require__(214);
+	var _warning = __webpack_require__(216);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -24556,7 +24485,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 221 */
+/* 223 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24565,7 +24494,7 @@
 	var canUseDOM = exports.canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 /***/ },
-/* 222 */
+/* 224 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24623,7 +24552,7 @@
 	};
 
 /***/ },
-/* 223 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24695,7 +24624,7 @@
 	exports.default = Router;
 
 /***/ },
-/* 224 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24708,11 +24637,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _createHashHistory = __webpack_require__(225);
+	var _createHashHistory = __webpack_require__(227);
 
 	var _createHashHistory2 = _interopRequireDefault(_createHashHistory);
 
-	var _Router = __webpack_require__(223);
+	var _Router = __webpack_require__(225);
 
 	var _Router2 = _interopRequireDefault(_Router);
 
@@ -24772,7 +24701,7 @@
 	exports.default = HashRouter;
 
 /***/ },
-/* 225 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -24789,25 +24718,25 @@
 	  }return target;
 	};
 
-	var _warning = __webpack_require__(214);
+	var _warning = __webpack_require__(216);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _invariant = __webpack_require__(215);
+	var _invariant = __webpack_require__(217);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
-	var _LocationUtils = __webpack_require__(216);
+	var _LocationUtils = __webpack_require__(218);
 
-	var _PathUtils = __webpack_require__(219);
+	var _PathUtils = __webpack_require__(221);
 
-	var _createTransitionManager = __webpack_require__(220);
+	var _createTransitionManager = __webpack_require__(222);
 
 	var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-	var _ExecutionEnvironment = __webpack_require__(221);
+	var _ExecutionEnvironment = __webpack_require__(223);
 
-	var _DOMUtils = __webpack_require__(222);
+	var _DOMUtils = __webpack_require__(224);
 
 	function _interopRequireDefault(obj) {
 	  return obj && obj.__esModule ? obj : { default: obj };
@@ -25112,7 +25041,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 226 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25240,7 +25169,7 @@
 	exports.default = Link;
 
 /***/ },
-/* 227 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25248,7 +25177,7 @@
 	exports.__esModule = true;
 	exports.default = undefined;
 
-	var _MemoryRouter = __webpack_require__(228);
+	var _MemoryRouter = __webpack_require__(230);
 
 	var _MemoryRouter2 = _interopRequireDefault(_MemoryRouter);
 
@@ -25259,7 +25188,7 @@
 	exports.default = _MemoryRouter2.default;
 
 /***/ },
-/* 228 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25272,11 +25201,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _createMemoryHistory = __webpack_require__(229);
+	var _createMemoryHistory = __webpack_require__(231);
 
 	var _createMemoryHistory2 = _interopRequireDefault(_createMemoryHistory);
 
-	var _Router = __webpack_require__(223);
+	var _Router = __webpack_require__(225);
 
 	var _Router2 = _interopRequireDefault(_Router);
 
@@ -25337,7 +25266,7 @@
 	exports.default = MemoryRouter;
 
 /***/ },
-/* 229 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -25362,15 +25291,15 @@
 	  }return target;
 	};
 
-	var _warning = __webpack_require__(214);
+	var _warning = __webpack_require__(216);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _PathUtils = __webpack_require__(219);
+	var _PathUtils = __webpack_require__(221);
 
-	var _LocationUtils = __webpack_require__(216);
+	var _LocationUtils = __webpack_require__(218);
 
-	var _createTransitionManager = __webpack_require__(220);
+	var _createTransitionManager = __webpack_require__(222);
 
 	var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
@@ -25528,7 +25457,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 230 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25557,11 +25486,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Route = __webpack_require__(231);
+	var _Route = __webpack_require__(233);
 
 	var _Route2 = _interopRequireDefault(_Route);
 
-	var _Link = __webpack_require__(226);
+	var _Link = __webpack_require__(228);
 
 	var _Link2 = _interopRequireDefault(_Link);
 
@@ -25622,7 +25551,7 @@
 	exports.default = NavLink;
 
 /***/ },
-/* 231 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25641,7 +25570,7 @@
 	  }return target;
 	};
 
-	var _warning = __webpack_require__(214);
+	var _warning = __webpack_require__(216);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -25649,7 +25578,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _matchPath = __webpack_require__(232);
+	var _matchPath = __webpack_require__(234);
 
 	var _matchPath2 = _interopRequireDefault(_matchPath);
 
@@ -25784,14 +25713,14 @@
 	exports.default = Route;
 
 /***/ },
-/* 232 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _pathToRegexp = __webpack_require__(233);
+	var _pathToRegexp = __webpack_require__(235);
 
 	var _pathToRegexp2 = _interopRequireDefault(_pathToRegexp);
 
@@ -25862,14 +25791,14 @@
 	exports.default = matchPath;
 
 /***/ },
-/* 233 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-	var isarray = __webpack_require__(234);
+	var isarray = __webpack_require__(236);
 
 	/**
 	 * Expose `pathToRegexp`.
@@ -26296,7 +26225,7 @@
 	}
 
 /***/ },
-/* 234 */
+/* 236 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26306,7 +26235,7 @@
 	};
 
 /***/ },
-/* 235 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26314,7 +26243,7 @@
 	exports.__esModule = true;
 	exports.default = undefined;
 
-	var _Prompt = __webpack_require__(236);
+	var _Prompt = __webpack_require__(238);
 
 	var _Prompt2 = _interopRequireDefault(_Prompt);
 
@@ -26325,7 +26254,7 @@
 	exports.default = _Prompt2.default;
 
 /***/ },
-/* 236 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26424,7 +26353,7 @@
 	exports.default = Prompt;
 
 /***/ },
-/* 237 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26432,7 +26361,7 @@
 	exports.__esModule = true;
 	exports.default = undefined;
 
-	var _Redirect = __webpack_require__(238);
+	var _Redirect = __webpack_require__(240);
 
 	var _Redirect2 = _interopRequireDefault(_Redirect);
 
@@ -26443,7 +26372,7 @@
 	exports.default = _Redirect2.default;
 
 /***/ },
-/* 238 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26536,7 +26465,7 @@
 	exports.default = Redirect;
 
 /***/ },
-/* 239 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26544,7 +26473,7 @@
 	exports.__esModule = true;
 	exports.default = undefined;
 
-	var _Route = __webpack_require__(231);
+	var _Route = __webpack_require__(233);
 
 	var _Route2 = _interopRequireDefault(_Route);
 
@@ -26555,7 +26484,7 @@
 	exports.default = _Route2.default;
 
 /***/ },
-/* 240 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26563,7 +26492,7 @@
 	exports.__esModule = true;
 	exports.default = undefined;
 
-	var _Router = __webpack_require__(223);
+	var _Router = __webpack_require__(225);
 
 	var _Router2 = _interopRequireDefault(_Router);
 
@@ -26574,7 +26503,7 @@
 	exports.default = _Router2.default;
 
 /***/ },
-/* 241 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26582,7 +26511,7 @@
 	exports.__esModule = true;
 	exports.default = undefined;
 
-	var _StaticRouter = __webpack_require__(242);
+	var _StaticRouter = __webpack_require__(244);
 
 	var _StaticRouter2 = _interopRequireDefault(_StaticRouter);
 
@@ -26593,7 +26522,7 @@
 	exports.default = _StaticRouter2.default;
 
 /***/ },
-/* 242 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26612,7 +26541,7 @@
 	  }return target;
 	};
 
-	var _invariant = __webpack_require__(215);
+	var _invariant = __webpack_require__(217);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -26620,9 +26549,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _PathUtils = __webpack_require__(219);
+	var _PathUtils = __webpack_require__(221);
 
-	var _Router = __webpack_require__(223);
+	var _Router = __webpack_require__(225);
 
 	var _Router2 = _interopRequireDefault(_Router);
 
@@ -26760,7 +26689,7 @@
 	exports.default = StaticRouter;
 
 /***/ },
-/* 243 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26768,7 +26697,7 @@
 	exports.__esModule = true;
 	exports.default = undefined;
 
-	var _Switch = __webpack_require__(244);
+	var _Switch = __webpack_require__(246);
 
 	var _Switch2 = _interopRequireDefault(_Switch);
 
@@ -26779,7 +26708,7 @@
 	exports.default = _Switch2.default;
 
 /***/ },
-/* 244 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26792,7 +26721,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _matchPath = __webpack_require__(232);
+	var _matchPath = __webpack_require__(234);
 
 	var _matchPath2 = _interopRequireDefault(_matchPath);
 
@@ -26889,7 +26818,7 @@
 	exports.default = Switch;
 
 /***/ },
-/* 245 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26897,7 +26826,7 @@
 	exports.__esModule = true;
 	exports.default = undefined;
 
-	var _matchPath = __webpack_require__(232);
+	var _matchPath = __webpack_require__(234);
 
 	var _matchPath2 = _interopRequireDefault(_matchPath);
 
@@ -26908,7 +26837,7 @@
 	exports.default = _matchPath2.default;
 
 /***/ },
-/* 246 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26916,7 +26845,7 @@
 	exports.__esModule = true;
 	exports.default = undefined;
 
-	var _withRouter = __webpack_require__(247);
+	var _withRouter = __webpack_require__(249);
 
 	var _withRouter2 = _interopRequireDefault(_withRouter);
 
@@ -26927,7 +26856,7 @@
 	exports.default = _withRouter2.default;
 
 /***/ },
-/* 247 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27014,6 +26943,71 @@
 	};
 
 	exports.default = withRouter;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _Song = __webpack_require__(180);
+
+	var _Song2 = _interopRequireDefault(_Song);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Playlist = function Playlist(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      'ul',
+	      { className: 'list-group' },
+	      props.data.map(function (datum, i) {
+	        return _react2.default.createElement(_Song2.default, { datum: datum, index: i, handlePlay: props.handlePlay, handleRemove: props.handleRemove });
+	      })
+	    )
+	  );
+	};
+
+	module.exports = Playlist;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var AudioPlayer = function AudioPlayer(props) {
+	  if (props.currentSong !== null) {
+	    return _react2.default.createElement(
+	      'audio',
+	      { preload: 'auto', controls: true, autoPlay: 'true', onEnded: props.playNextSong },
+	      _react2.default.createElement('source', { src: props.currentSong, type: 'audio/mp3' })
+	    );
+	  }
+	  return null;
+	};
+
+	module.exports = AudioPlayer;
 
 /***/ }
 /******/ ]);
