@@ -249,7 +249,7 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.state.distanceFrom > .17 || this.state.distanceFrom === null) {
+    if (this.state.distanceFrom > .3 || this.state.distanceFrom === null) {
       return (
         <div> you arent at the party yet</div>
       )
