@@ -6,15 +6,22 @@ var bcrypt = Promise.promisifyAll(require('bcrypt'), { multiArgs: true} );
 module.exports = {
 	songs: {
 		get: function (req, res) {
-			db.Song.findOne( {where: { title: req.body.title }})
-			.then(function(song) {
-				res.json(song);
-			})
+			db.Song.findAll({})
+			.then(function(playlist) {
+				res.json(playlist);
+			});
 		},
 		post: function (req, res) {
-			db.Song.findOrCreate( {where: { title: req.body.title }})
+			db.Song.findOrCreate( {where: { src: req.body.src, data: req.body.data }})
 			.spread(function(song, created) {
-				res.sendStatus(created ? 201 : 200);
+				res.send(song);
+			})
+		},
+		delete: function (req, res) {
+			db.Song.destroy( {where: {src: req.body.src} } )
+			.then(function() {
+				res.send('success')
+				console.log('delete was successful')
 			})
 		}
 	},
@@ -22,13 +29,9 @@ module.exports = {
 	users: {
 		//login
 		get: function (req, res) {
-			console.log(req.query, 'request')
 			db.User.findOne( { where: { username: req.query.username} })
 			.then(function(user) {
-				console.log(user.username, "username")
 				var inputPass = req.query.password;
-				console.log(inputPass, "input password");
-				console.log(user.password, "hashed password");
 				bcrypt.compare(inputPass, user.password)
 			  .then( function(isAuthenticated) {
 			    console.log('Is this user authenticated ? ', isAuthenticated);
@@ -42,8 +45,6 @@ module.exports = {
 			    console.log('There is error in checkUser', err);
 			    res.redirect('/login');
 			  });
-				//redirect to server (then we will hit check)
-				// res.redirect('/?username=' + user.username + '&password=' + user.password);
 			})
 			.catch(function(err) {
 				console.log('db controller error: ', err);

@@ -7,7 +7,8 @@ router.get('/signup', controller.users.post);
 
 
 //routes for songs
-router.get('/api/songs', controller.songs.get);
-router.post('/api/songs', controller.songs.post);
+router.get('/songs', controller.songs.get);
+router.post('/songs', controller.songs.post);
+router.delete('/songs', controller.songs.delete);
 
 module.exports = router;
