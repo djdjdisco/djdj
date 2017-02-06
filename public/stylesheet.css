@@ -66,18 +66,33 @@ ul {
 }
 
 /*Song Styles*/
-li, .song {
-     color: #DCDCDC;
-    /* background-color: #393a3d; */
-    border-bottom: 0.5px solid #393a3d;
-    font-size: 9px;
-    line-height: 3.4em;
-    /*padding: 0px 0px 10px 5px;*/
-    width: 350px;
-    float: left;
-    font-family: Helvetica;
+
+.song {
+  color: #DCDCDC;
+  /*// background-color: #393a3d;*/
+  border-bottom: 0.5px solid #393a3d;
+  font-size: 9px;
+  line-height: 3.4em;
+  /*// padding: 0px 0px 10px 5px;*/
+  width: 350px;
+  float: left;
+  font-family: Helvetica;
 
 }
+
+.list-group-song {
+  color: #DCDCDC;
+  font-size: 12px;
+  line-height: 3.4em;
+  width: 400px;
+  float: left;
+  font-family: Helvetica;
+  border-bottom: 0.5px solid #393a3d;
+  margin-left: -40px;
+  padding: 10px;
+
+}
+
 
 .thumbnail {
     height: 45px;

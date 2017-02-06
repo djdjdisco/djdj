@@ -354,9 +354,16 @@
 /* 4 */
 /***/ function(module, exports) {
 
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+
 	'use strict';
 	/* eslint-disable no-unused-vars */
 
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -377,7 +384,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc'); // eslint-disable-line
+			var test1 = new String('abc'); // eslint-disable-line no-new-wrappers
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -405,7 +412,7 @@
 			}
 
 			return true;
-		} catch (e) {
+		} catch (err) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -425,8 +432,8 @@
 				}
 			}
 
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -21989,7 +21996,7 @@
 	var Song = function Song(props) {
 	   return _react2.default.createElement(
 	      'li',
-	      null,
+	      { className: 'list-group-song' },
 	      _react2.default.createElement('img', { className: 'thumbnail', src: props.datum.snippet.thumbnails.default.url }),
 	      _react2.default.createElement(
 	         'button',
@@ -22007,7 +22014,7 @@
 	      ),
 	      _react2.default.createElement(
 	         'span',
-	         { className: 'list-group-item song' },
+	         { className: 'list-group-item' },
 	         props.datum.snippet.title
 	      )
 	   );
@@ -22201,10 +22208,47 @@
 
 /***/ },
 /* 186 */
+<<<<<<< HEAD
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var AudioPlayer = function AudioPlayer(props) {
+	  if (props.currentSong !== null) {
+	    return _react2.default.createElement(
+	      'audio',
+	      { preload: 'auto', controls: true, autoPlay: 'true', onEnded: props.playNextSong },
+	      _react2.default.createElement('source', { src: props.currentSong, type: 'audio/mp3' })
+	    );
+	  }
+	  return null;
+	};
+
+	module.exports = AudioPlayer;
+
+/***/ },
+/* 187 */
+=======
+>>>>>>> 0a4f420d4d9e8a06fccf15eca591f79dfb40f3e2
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+<<<<<<< HEAD
+	module.exports = __webpack_require__(188);
+
+/***/ },
+=======
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -22237,6 +22281,7 @@
 	module.exports = __webpack_require__(188);
 
 /***/ },
+>>>>>>> 0a4f420d4d9e8a06fccf15eca591f79dfb40f3e2
 /* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
