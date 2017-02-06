@@ -5,7 +5,7 @@ light grey - ##DCDCDC
 black - #010101*/
 
 #app {
-      padding-top: 20px;
+    padding-top: 20px;
     position: absolute;
     width: 600px;
     height: 420px;
@@ -14,6 +14,16 @@ black - #010101*/
     left: 23%;
 }
 
+/*styling for the login page*/
+.app {
+  padding-top: 20px;
+  position: absolute;
+  width: 600px;
+  height: 420px;
+  /*background-color: black;*/
+  top: 23%;
+  left: 23%;
+}
 
 body {
 /*	background: url('client/people-dancing.png');
@@ -48,12 +58,12 @@ html {
   padding-left: 10px;
 }
 
-h3 {
+h1, h3, label {
 	color: #FEFEFE;
   font-family: Helvetica;
 }
 /*SongList Styles*/
-ul {
+.list-group {
 	 border: 3px solid rgb(68, 63, 64);
     list-style: none;
     overflow-y: scroll;
@@ -68,16 +78,20 @@ ul {
 /*Song Styles*/
 
 .song {
-  color: #DCDCDC;
-  /*// background-color: #393a3d;*/
-  border-bottom: 0.5px solid #393a3d;
-  font-size: 9px;
-  line-height: 3.4em;
-  /*// padding: 0px 0px 10px 5px;*/
-  width: 350px;
-  float: left;
-  font-family: Helvetica;
+    color: #DCDCDC;
+    /* background-color: #393a3d; */
+    border-bottom: 0.5px solid #393a3d;
+    font-size: 9px;
+    line-height: 3.4em;
+    /*padding: 0px 0px 10px 5px;*/
+    width: 350px;
+    float: left;
+    font-family: Helvetica;
+}
 
+.player-list-button {
+  border:none;
+  list-style: none
 }
 
 .list-group-song {
@@ -99,7 +113,7 @@ ul {
     width: 45px;
     float: left;
     padding-left: 2px;
-
+    padding-right: 13px;
 }
 
 .btn {
@@ -108,6 +122,16 @@ ul {
     height: 30px;
 }
 
+.playSong, .removeSong {
+  background:none;
+  border:none;
+  float: left;
+}
+
+.player-button {
+  height: 18px;
+  width: 18px;
+}
 /*Search Bar Styles*/
 .form-inline{
   padding-top: 15px;
