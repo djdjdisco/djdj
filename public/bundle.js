@@ -21752,6 +21752,7 @@
 	  }, {
 	    key: 'deleteSong',
 	    value: function deleteSong(src) {
+	      console.log('Sending to db, src :', src);
 	      var context = this;
 	      (0, _axios2.default)({
 	        method: 'DELETE',
@@ -21787,7 +21788,7 @@
 	        method: 'GET',
 	        url: '/api/songs'
 	      }).then(function (success) {
-
+	        console.log('success in getPlaylist : ', success.data);
 	        //songs array from response
 	        var songs = success.data;
 	        var newSrc = [];
@@ -21867,8 +21868,9 @@
 	      console.log('clicking remove');
 	      // var newSrc = this.state.srcs;
 	      // var newData = this.state.data;
-	      var target = this.state.srcs[index];
 
+	      var target = this.state.srcs[index];
+	      console.log('target src in handleRemove : ', target, index);
 	      this.deleteSong.call(this, target);
 	      // var clickedSrc = newSrc[index];
 	      // newSrc.splice(index, 1)
@@ -22016,7 +22018,9 @@
 	        null,
 	        _react2.default.createElement(
 	          'button',
-	          { onClick: props.handleRemove, className: 'removeSong' },
+	          { onClick: function onClick() {
+	              props.handleRemove(props.index);
+	            }, className: 'removeSong' },
 	          _react2.default.createElement('img', { className: 'player-button', src: 'static/images/delete-button.png' })
 	        )
 	      )
