@@ -22008,7 +22008,7 @@
 	          { onClick: function onClick() {
 	              props.handlePlay(props.index);
 	            }, className: 'playSong' },
-	          _react2.default.createElement('img', { 'class': 'player-button', src: 'static/images/play-button.png' })
+	          _react2.default.createElement('img', { className: 'player-button', src: 'static/images/play-button.png' })
 	        )
 	      ),
 	      _react2.default.createElement(
@@ -22017,7 +22017,7 @@
 	        _react2.default.createElement(
 	          'button',
 	          { onClick: props.handleRemove, className: 'removeSong' },
-	          _react2.default.createElement('img', { 'class': 'player-button', src: 'static/images/delete-button.png' })
+	          _react2.default.createElement('img', { className: 'player-button', src: 'static/images/delete-button.png' })
 	        )
 	      )
 	    ),
