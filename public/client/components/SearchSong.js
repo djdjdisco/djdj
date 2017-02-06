@@ -8,11 +8,11 @@ var SearchSong = (props) => (
 		<div>
 
 		<li className="list-group-item song">
-			<button onClick={function () {
+			<button className='search-add-button' onClick={function () {
 					props.handleSearchClicks(props.index)}
 				}
-				>Add</button>
-			{props.song.snippet.title}
+				><img className='player-button' src='static/images/add-song-button.png'/></button>
+			<span className="search-result-title">{props.song.snippet.title}</span>
 		</li>
 	</div>
 

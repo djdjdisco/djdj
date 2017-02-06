@@ -22179,13 +22179,17 @@
 					{ className: 'list-group-item song' },
 					_react2.default.createElement(
 						'button',
-						{ onClick: function onClick() {
+						{ className: 'search-add-button', onClick: function onClick() {
 								props.handleSearchClicks(props.index);
 							}
 						},
-						'Add'
+						_react2.default.createElement('img', { className: 'player-button', src: 'static/images/add-song-button.png' })
 					),
-					props.song.snippet.title
+					_react2.default.createElement(
+						'span',
+						{ className: 'search-result-title' },
+						props.song.snippet.title
+					)
 				)
 			)
 		);
@@ -22214,7 +22218,7 @@
 			'form',
 			{ className: 'form-inline', onSubmit: props.getYoutubeSong },
 			_react2.default.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Add a song to the playlist!', onChange: props.handleChange }),
-			_react2.default.createElement('input', { type: 'submit', value: 'Submit' })
+			_react2.default.createElement('input', { type: 'submit', className: 'submit-button', value: 'Search' })
 		);
 	};
 
