@@ -39,6 +39,7 @@ app.use('/node_modules', express.static(path.join(__dirname, '../node_modules'))
 app.use('/static', express.static(path.join(__dirname, '../public')));
 
 
+
 app.use( function(incomingRequest, res, next) {
   console.log('Now serving ' + incomingRequest.method + ' @ ' + incomingRequest.url);
   next();
@@ -50,6 +51,9 @@ app.get('/', util.checkUser, function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+app.get('/favicon.ico', function(req, res) {
+  res.sendFile(path.join(__dirname, '../public/favicon.ico'));  
+});
 
 app.get('/login', function(req, res) {
   res.sendFile(path.join(__dirname, '../public/login.html'));
