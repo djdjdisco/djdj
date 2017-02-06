@@ -45,8 +45,8 @@ app.use( function(incomingRequest, res, next) {
 });
 
 // serving the user index.html
-// app.get('/', util.checkUser, function(req, res) {
-app.get('/', function(req, res) {
+app.get('/', util.checkUser, function(req, res) {
+// app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 

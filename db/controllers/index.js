@@ -1,4 +1,6 @@
 var db = require('../index.js');
+var Promise = require('bluebird');
+var bcrypt = Promise.promisifyAll(require('bcrypt'), { multiArgs: true} );
 
 
 module.exports = {
@@ -21,35 +23,46 @@ module.exports = {
 		//login
 		get: function (req, res) {
 			console.log(req.query, 'request')
-			db.User.findOne( { username: req.query.username} )
+			db.User.findOne( { where: { username: req.query.username} })
 			.then(function(user) {
-				console.log(user, 'meow')
-				res.redirect('/?username=' + user.username + '&password=' + user.password);
+				console.log(user.username, "username")
+				var inputPass = req.query.password;
+				console.log(inputPass, "input password");
+				console.log(user.password, "hashed password");
+				bcrypt.compare(inputPass, user.password)
+			  .then( function(isAuthenticated) {
+			    console.log('Is this user authenticated ? ', isAuthenticated);
+			    if ( isAuthenticated  ) {
+			      res.redirect('/?authenticated=' + isAuthenticated);
+			    } else {
+			      res.redirect('/login');
+			    }
+			  })
+			  .catch( function(err) {
+			    console.log('There is error in checkUser', err);
+			    res.redirect('/login');
+			  });
+				//redirect to server (then we will hit check)
+				// res.redirect('/?username=' + user.username + '&password=' + user.password);
 			})
 			.catch(function(err) {
 				console.log('db controller error: ', err);
 			})
-			// .then(function (user) {
-			// 	var password = req.query.password;
-			// 	var hash = res.query.password;
-			// 	//user instance methods
-			// 	// this.validPassword(password, hash);
-			// })
-			// .catch(function (err) {
-			// 	console.log('Error with account lookup: ', err);
-			// })
 		},
 		//signup
 		post: function (req, res) {
 			console.log(req.query.username, 'user?')
 			console.log(req.query.password, "password?")
-			db.User.create( {username: req.query.username, password: req.query.password})
-			.then (function (user, created) {
-				console.log('created')
+			db.User.findOrCreate( { where: { username: req.query.username, password: req.query.password } })
+			.spread (function (user, created) {
+				console.log(created, 'created in post db controller');
+				console.log(user, 'user in post db controller')
 				res.redirect('/login');
 			})
 			.catch(function(err) {
+				console.log('You already have an account, please login!');
 				console.log('db controller error: ', err);
+				res.redirect('/login');
 			})
 		}
 

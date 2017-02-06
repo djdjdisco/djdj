@@ -1,5 +1,5 @@
 var Promise = require('bluebird');
-bcrypt = Promise.promisifyAll(require('bcrypt'), { multiArgs: true} );
+var bcrypt = Promise.promisifyAll(require('bcrypt'), { multiArgs: true} );
 var axios = require('axios');
 
 var authData = {};
@@ -10,23 +10,29 @@ const someOtherPlaintextPassword = 'not_bacon';
 
 //how to access original password input
 var checkUser = function(req, res, next) {
-  var username = req.body.username;
-  var plainPassword = req.body.password;
-  console.log(username, plainPassword);
-  res.redirect('/login')
-  bcrypt.compare(plainPassword, req.query.password)
-  .then( function(isAuthenticated) {
-    console.log('Is this user authenticated ? ', isAuthenticated);
-    if ( isAuthenticated  ) {
-      next();
-    } else {
-      res.redirect('/login');
-    }
-  })
-  .catch( function(err) {
-    console.log('There is error in checkUser', err);
+  // var username = req.body.username;
+  // var plainPassword = req.body.password;
+  // console.log(username, plainPassword);
+  // res.redirect('/login')
+  // bcrypt.compare(plainPassword, req.query.password)
+  // .then( function(isAuthenticated) {
+  //   console.log('Is this user authenticated ? ', isAuthenticated);
+  //   if ( isAuthenticated  ) {
+  //     next();
+  //   } else {
+  //     res.redirect('/login');
+  //   }
+  // })
+  // .catch( function(err) {
+  //   console.log('There is error in checkUser', err);
+  //   res.redirect('/login');
+  // });
+  console.log(req.query, "req query in check USER")
+  if (req.query.authenticated) {
+    next();
+  } else {
     res.redirect('/login');
-  });
+  }
 };
 
 var hashPassword = function(username, plainPassword, cb) {

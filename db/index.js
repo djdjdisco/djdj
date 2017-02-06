@@ -26,7 +26,7 @@ var Song = orm.define('song', {
 // });
 
 var User = orm.define('user', {
-	username: Sequelize.STRING,
+	username: {type: Sequelize.STRING, unique: true},
 	password: Sequelize.STRING
 },
 {
