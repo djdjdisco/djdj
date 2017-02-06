@@ -164,6 +164,7 @@ class App extends React.Component {
   }
 
   deleteSong (src) {
+    console.log('Sending to db, src :', src);
     var context = this;
     axios({
       method: 'DELETE',
@@ -201,7 +202,7 @@ class App extends React.Component {
       url: '/api/songs'
     })
     .then(function(success) {
-
+      console.log('success in getPlaylist : ', success.data);
       //songs array from response
       var songs = success.data;
       var newSrc= [];
@@ -279,8 +280,9 @@ class App extends React.Component {
     console.log('clicking remove')
     // var newSrc = this.state.srcs;
     // var newData = this.state.data;
-    var target = this.state.srcs[index];
 
+    var target = this.state.srcs[index];
+    console.log('target src in handleRemove : ', target, index);
     this.deleteSong.call(this, target);
     // var clickedSrc = newSrc[index];
     // newSrc.splice(index, 1)

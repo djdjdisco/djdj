@@ -9,7 +9,7 @@ var Promise = require('bluebird');
 var orm = new Sequelize('djsdj', null, null, {
 		dialect: "postgres",
 	  port: 5432
-	});
+});
 
 var Song = orm.define('song', {
 	src: Sequelize.STRING,
