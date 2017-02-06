@@ -76,7 +76,7 @@ class App extends React.Component {
       distanceFrom: null
     };
     this.getGeolocation.call(this);
-    // setInterval(this.getGeolocation.bind(this), 3000);
+    setInterval(this.getGeolocation.bind(this), 3000);
 
     this.getPlaylist.call(this);
   }
@@ -140,7 +140,7 @@ class App extends React.Component {
         console.log('play next song!', currentSongIndex);
       }.bind(this);
       // plat next song after 2 secs
-      setTimeout(setNextSong, 1000);
+      setTimeout(setNextSong, 0);
     }
   }
 
@@ -191,7 +191,7 @@ class App extends React.Component {
       });
     }.bind(this);
     // plat next song after 2 secs
-    setTimeout(setNextSong, 1000);
+    setTimeout(setNextSong, 0);
 
   }
 
@@ -277,27 +277,13 @@ class App extends React.Component {
   }
 
   handleRemove(index) {
-    console.log('clicking remove')
-    // var newSrc = this.state.srcs;
-    // var newData = this.state.data;
-
     var target = this.state.srcs[index];
-    console.log('target src in handleRemove : ', target, index);
     this.deleteSong.call(this, target);
-    // var clickedSrc = newSrc[index];
-    // newSrc.splice(index, 1)
-    // newData.splice(index, 1)
-    // console.log('newsrc', newSrc)
-    // this.setState({
-    //   srcs: newSrc,
-    //   data: newData
-    // });
 
     // if the index being removed is the current song playing
-    // if (this.state.currentSong === target) {
-    //   // play the next song
-    //   this.playNextSong();
-    // }
+    if (this.state.currentSong === target) {
+      this.playNextSong();
+    }
 
   }
   // updating state's value to the user's query
