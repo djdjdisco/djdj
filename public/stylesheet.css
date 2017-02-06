@@ -103,6 +103,15 @@ li, .song {
     height: 30px;
 }
 
+.playSong, .removeSong {
+  background:none;
+  border:none;
+}
+
+.player-button {
+  height: 18px;
+  width: 18px;
+}
 /*Search Bar Styles*/
 .form-inline{
   padding-top: 15px;
