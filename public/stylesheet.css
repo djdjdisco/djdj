@@ -63,7 +63,7 @@ h1, h3 {
   font-family: Helvetica;
 }
 /*SongList Styles*/
-ul {
+.list-group {
 	 border: 3px solid rgb(68, 63, 64);
     list-style: none;
     overflow-y: scroll;
@@ -76,8 +76,8 @@ ul {
 }
 
 /*Song Styles*/
-li, .song {
-     color: #DCDCDC;
+.song {
+    color: #DCDCDC;
     /* background-color: #393a3d; */
     border-bottom: 0.5px solid #393a3d;
     font-size: 9px;
@@ -87,6 +87,23 @@ li, .song {
     float: left;
     font-family: Helvetica;
 
+} 
+
+.list-group-song {
+  color: #DCDCDC;
+  border-bottom: 0.5px solid #393a3d;
+  font-size: 12px;
+  line-height: 3.4em;
+  padding: 10px;
+  width: 400px;
+  float: left;
+  font-family: Helvetica;
+  margin-left: -40px;
+}
+
+.player-list-button {
+  border:none;
+  list-style: none
 }
 
 .thumbnail {
@@ -94,7 +111,7 @@ li, .song {
     width: 45px;
     float: left;
     padding-left: 2px;
-
+    padding-right: 13px;
 }
 
 .btn {
@@ -106,6 +123,7 @@ li, .song {
 .playSong, .removeSong {
   background:none;
   border:none;
+  float: left;
 }
 
 .player-button {

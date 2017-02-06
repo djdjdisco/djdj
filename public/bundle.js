@@ -21907,28 +21907,40 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Song = function Song(props) {
-	   return _react2.default.createElement(
-	      'li',
-	      null,
-	      _react2.default.createElement('img', { className: 'thumbnail', src: props.datum.snippet.thumbnails.default.url }),
-	      _react2.default.createElement(
-	         'button',
-	         { onClick: function onClick() {
-	               props.handlePlay(props.index);
-	            }, className: 'playSong' },
-	         _react2.default.createElement('img', { 'class': 'player-button', src: 'static/images/play-button.png' })
-	      ),
-	      _react2.default.createElement(
-	         'button',
-	         { onClick: props.handleRemove, className: 'removeSong' },
-	         _react2.default.createElement('img', { 'class': 'player-button', src: 'static/images/delete-button.png' })
-	      ),
-	      _react2.default.createElement(
-	         'span',
-	         { className: 'list-group-item song' },
-	         props.datum.snippet.title
-	      )
-	   );
+		return _react2.default.createElement(
+			'li',
+			{ className: 'list-group-song' },
+			_react2.default.createElement(
+				'ul',
+				{ className: 'player-list-button' },
+				_react2.default.createElement(
+					'li',
+					null,
+					_react2.default.createElement(
+						'button',
+						{ onClick: function onClick() {
+								props.handlePlay(props.index);
+							}, className: 'playSong' },
+						_react2.default.createElement('img', { 'class': 'player-button', src: 'static/images/play-button.png' })
+					)
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					_react2.default.createElement(
+						'button',
+						{ onClick: props.handleRemove, className: 'removeSong' },
+						_react2.default.createElement('img', { 'class': 'player-button', src: 'static/images/delete-button.png' })
+					)
+				)
+			),
+			_react2.default.createElement(
+				'span',
+				{ className: 'list-group-item' },
+				props.datum.snippet.title
+			),
+			_react2.default.createElement('img', { className: 'thumbnail', src: props.datum.snippet.thumbnails.default.url })
+		);
 	};
 	module.exports = Song;
 
