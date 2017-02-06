@@ -7,7 +7,7 @@
     "start": "nodemon server/server.js",
     "test": "mocha ./test/mainTest.js",
     "webpack": "webpack-dev-server",
-    "postinstall": "webpack -p --config ./webpack.prod.config.js --progress"
+    "postinstall": "webpack -p --config ./webpack.config.js --progress"
   },
   "repository": {
     "type": "git",
