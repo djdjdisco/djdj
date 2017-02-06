@@ -62,15 +62,9 @@ app.get('/signup', function(req, res) {
 app.post('/signup', function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  if ( !util.authData[username] ) {
     util.hashPassword(username, password, function(hashedPassword) {
-      util.savePassword(username, hashedPassword);
-      //res.query
       res.redirect('/api/signup/?username=' + username + '&password=' + hashedPassword);
     });
-  } else {
-    res.redirect('/login');
-  }
 });
 
 

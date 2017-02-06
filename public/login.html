@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="./static/stylesheet.css">
     <title> DJDJDISCO - Login Page </title>
   </head>
   <body>
-    <h1>DJDJDISCO - Login Page </h1>
-    <a href="/signup"> signup </a>
-      <!-- <form name="login" method="GET" action="/api/login" >  -->
-      <form name="login" method="GET" action="/" > 
+    <div class="app" style="background-image: url(static/images/people-dancing.png)">
+      <img style="height:59%" className="logo" src="static/images/DJ-DJ.png" />
+      <h1 style="text-align: center">join the party </h1>
 
-        <label>
-          username :
-          <input type="text" name="username" />
-          <br/>
-        </label>
-        <label>
-          password :
-          <input type="text" name="password" />
-          <br/>
-        </label>
-        <input type="submit"  value="Submit"></input>
-      </form>
+        <form style="text-align: center" name="login" method="GET" action="/" >
+          <label>
+            username :
+            <input type="text" name="username" />
+            <br/>
+          </label>
+          <label>
+            password :
+            <input type="text" name="password" />
+            <br/>
+          </label>
+          <input type="submit"  value="Submit"></input>
+          <button> <a style="text-align: center; text-decoration: none" href="/signup"> Sign-Up </a></button>
+        </form>
+      </div>
   </body>
 </html>

@@ -12,10 +12,8 @@ var orm = new Sequelize('djsdj', null, null, {
 	});
 
 var Song = orm.define('song', {
-	title: Sequelize.STRING,
-	artist: Sequelize.STRING,
-	img: Sequelize.STRING,
-	songrl: Sequelize.STRING
+	src: Sequelize.STRING,
+	data: Sequelize.STRING(1000)
 },
 {
 	timestamps: false

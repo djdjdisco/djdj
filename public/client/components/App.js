@@ -76,7 +76,9 @@ class App extends React.Component {
       distanceFrom: null
     };
     this.getGeolocation.call(this);
-    setInterval(this.getGeolocation.bind(this), 3000);
+    // setInterval(this.getGeolocation.bind(this), 3000);
+
+    this.getPlaylist.call(this);
   }
     // calculating the current geolocation and distance of user every 5 seconds
     // setInterval(this.getGeolocation.bind(this), 5000);
@@ -142,6 +144,41 @@ class App extends React.Component {
     }
   }
 
+  postNewSong (src, data) {
+    var context = this;
+    axios({
+      method: 'POST',
+      url: '/api/songs',
+      data: {
+        src: src,
+        data: JSON.stringify(data)
+      }
+    })
+    .then(function(success) {
+      console.log('song post sent')
+      context.getPlaylist.call(context);
+    })
+    .catch(function(err) {
+      console.log('error with post new song, ', err)
+    })
+  }
+
+  deleteSong (src) {
+    var context = this;
+    axios({
+      method: 'DELETE',
+      url: '/api/songs',
+      data: {src: src}
+    })
+    .then(function(success) {
+      console.log(success, 'delete successful');
+      context.getPlaylist.call(context);
+    })
+    .catch(function(err) {
+      console.log('error with delete: ', err);
+    })
+  }
+
   playSong(index) {
     this.setState({
       currentSong: null
@@ -157,8 +194,59 @@ class App extends React.Component {
 
   }
 
+  getPlaylist () {
+    var context = this;
+    axios({
+      method: 'GET',
+      url: '/api/songs'
+    })
+    .then(function(success) {
+
+      //songs array from response
+      var songs = success.data;
+      var newSrc= [];
+      var newData = [];
+
+      songs.forEach(function(song) {
+        newData.push(JSON.parse(song.data));
+        newSrc.push(song.src);
+      })
+
+      // var newSrcs = context.state.srcs;
+      // var newData = context.state.data;
+
+      // push download link and data to the current src/data array
+      // newSrcs.push(directDownloadLink);
+      // newData.push(searchResult[index]);
+      // console.log('searchResult : ', searchResult[index]);
+
+      // set the state to the newSrc/newData
+      context.setState({
+        srcs: newSrc,
+        data: newData
+      });
+
+      // if there is no current song,
+      if ( context.state.currentSong === null ) {
+        console.log('set directDownloadLink');
+        // set the state to the current download link
+        context.setState({
+          currentSong: newSrc[0]
+        });
+      };
+      // console.log('new song : ', directDownloadLink);
+      console.log('get request was sent to the db songs endpoint')
+    })
+    .catch(function (err) {
+      console.log('There was an error with the GET request to /api/songs, ', err);
+    })
+  }
+
   // handle search clicks
   handleSearchClicks (index) {
+    //refrences the app instance => keyword "this"
+
+
     var context = this;
 
     var searchResult = this.state.searchResults;
@@ -172,34 +260,14 @@ class App extends React.Component {
     // create the direct DownloadLink, which requires the youtube URL
     var directDownloadLink = 'https://www.youtubeinmp3.com/fetch/?video=' + selectedSongUrl;
 
-    if ( !selectedSongId || context.state.srcs.indexOf(directDownloadLink) !== -1) {
-      alert('This song is already on the playlist!')
-      return;
-    }
+    // if ( !selectedSongId || context.state.srcs.indexOf(directDownloadLink) !== -1) {
+    //   alert('This song is already on the playlist!')
+    //   return;
+    // }
     // get current srcs and data from state
-    var newSrcs = context.state.srcs;
-    var newData = context.state.data;
 
-    // push download link and data to the current src/data array
-    newSrcs.push(directDownloadLink);
-    newData.push(searchResult[index]);
-    console.log('searchResult : ', searchResult[index]);
-
-    // set the state to the newSrc/newData
-    context.setState({
-      srcs: newSrcs,
-      data: newData
-    });
-
-    // if there is no current song,
-    if ( context.state.currentSong === null ) {
-      console.log('set directDownloadLink');
-      // set the state to the current download link
-      context.setState({
-        currentSong: directDownloadLink
-      });
-    };
-    console.log('new song : ', directDownloadLink);
+    this.postNewSong.call(this, directDownloadLink, searchResult[index]);
+    
 
   }
 
@@ -209,22 +277,25 @@ class App extends React.Component {
 
   handleRemove(index) {
     console.log('clicking remove')
-    var newSrc = this.state.srcs;
-    var newData = this.state.data;
-    var clickedSrc = newSrc[index];
-    newSrc.splice(index, 1)
-    newData.splice(index, 1)
-    console.log('newsrc', newSrc)
-    this.setState({
-      srcs: newSrc,
-      data: newData
-    });
+    // var newSrc = this.state.srcs;
+    // var newData = this.state.data;
+    var target = this.state.srcs[index];
+
+    this.deleteSong.call(this, target);
+    // var clickedSrc = newSrc[index];
+    // newSrc.splice(index, 1)
+    // newData.splice(index, 1)
+    // console.log('newsrc', newSrc)
+    // this.setState({
+    //   srcs: newSrc,
+    //   data: newData
+    // });
 
     // if the index being removed is the current song playing
-    if (this.state.currentSong === clickedSrc) {
-      // play the next song
-      this.playNextSong();
-    }
+    // if (this.state.currentSong === target) {
+    //   // play the next song
+    //   this.playNextSong();
+    // }
 
   }
   // updating state's value to the user's query
