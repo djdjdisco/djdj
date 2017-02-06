@@ -5,7 +5,7 @@ light grey - ##DCDCDC
 black - #010101*/
 
 #app {
-      padding-top: 20px;
+    padding-top: 20px;
     position: absolute;
     width: 600px;
     height: 420px;
@@ -14,6 +14,16 @@ black - #010101*/
     left: 23%;
 }
 
+/*styling for the login page*/
+.app {
+  padding-top: 20px;
+  position: absolute;
+  width: 600px;
+  height: 420px;
+  /*background-color: black;*/
+  top: 23%;
+  left: 23%;
+}
 
 body {
 /*	background: url('client/people-dancing.png');
@@ -48,7 +58,7 @@ html {
   padding-left: 10px;
 }
 
-h3 {
+h1, h3 {
 	color: #FEFEFE;
   font-family: Helvetica;
 }
