@@ -96,7 +96,7 @@ h1, h3, label {
 
 .list-group-song {
   color: #DCDCDC;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 3.4em;
   width: 400px;
   float: left;
@@ -109,7 +109,7 @@ h1, h3, label {
 
 .list-group-item {
   padding-left: 10px;
-  line-height: 4em;
+  line-height: 4.4em;
 }
 
 .thumbnail {
