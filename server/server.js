@@ -37,7 +37,7 @@ app.use('/api/', routes);
 // all static files/modules being served
 app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
 app.use('/static', express.static(path.join(__dirname, '../public')));
-app.use('/', express.static(path.join(__dirname, '../')));
+
 
 
 app.use( function(incomingRequest, res, next) {
