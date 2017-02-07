@@ -2,7 +2,7 @@ var Sequelize = require('sequelize');
 var Promise = require('bluebird');
 // bcrypt = Promise.promisifyAll(require('bcrypt'), {multiArgs:true});
 var orm;
-/*postgres://hpblhrvcoewnjp:041e28a7f451fc8fbd5ff9d92cd082db1e063ae66816a9c0b6b022947f6ef9f3@ec2-54-235-248-197.compute-1.amazonaws.com:5432/dbcghuk10tpnnm*/
+process.env.DATABASE_URL = 'postgres://hpblhrvcoewnjp:041e28a7f451fc8fbd5ff9d92cd082db1e063ae66816a9c0b6b022947f6ef9f3@ec2-54-235-248-197.compute-1.amazonaws.com:5432/dbcghuk10tpnnm';
 if (!process.env.DATABASE_URL) {
 	orm = new Sequelize('djsdj', null, null, {
 			dialect: "postgres",
