@@ -1,6 +1,6 @@
 # Project Name
 
-> Pithy project description
+DJDJ
 
 ## Team
 
@@ -41,6 +41,8 @@ sudo npm install -g bower
 npm install
 bower install
 ```
+Postgres Setup:
+We recommend using Postgres.app to install PostgreSQL. Follow the instructions on the set-up page. Also recommended to install a GUI for DB
 
 ### Roadmap
 
