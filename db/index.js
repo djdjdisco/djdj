@@ -1,14 +1,18 @@
 var Sequelize = require('sequelize');
 var Promise = require('bluebird');
 // bcrypt = Promise.promisifyAll(require('bcrypt'), {multiArgs:true});
-// postgresql-fitted-81554
-var orm = new Sequelize(process.env.DATABASE_URL, {
-		dialect: "postgres",
-	  port: 5432
-}) || new Sequelize('djsdj', null, null, {
-		dialect: "postgres",
-	  port: 5432
-})
+var orm;
+if (!process.env.DATABASE_URL) {
+	orm = new Sequelize('djsdj', null, null, {
+			dialect: "postgres",
+		  port: 5432
+	});
+} else {
+	orm = new Sequelize(process.env.DATABASE_URL, {
+		dialect: "postgres"
+	});
+}
+	
 //use this for when we deploy
 
 //db name, user, password
