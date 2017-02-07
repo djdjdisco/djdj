@@ -26,6 +26,8 @@ This app will create silent disco playlists accessible by the location of the us
 - Postgresql 9.1.x
 - React
 
+We recommend using Postgres.app to install PostgreSQL. Follow the instructions on the set-up page. Also recommended to install a GUI for DB. Start the local postgres DB in your root directory with the "psql" commnand.
+For deployment with heroku use "heroku config" command to access the DB URL. Follow the prompts in this article: https://medium.com/@HalahSalih/how-to-deploy-an-express-app-to-heroku-with-postgresql-database-using-git-266e100d59ff#.6htijafof .
 
 ### Installing Dependencies and Running the Server
 
