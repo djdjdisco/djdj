@@ -2,6 +2,7 @@ var db = require('../index.js');
 var Promise = require('bluebird');
 var bcrypt = Promise.promisifyAll(require('bcrypt'), { multiArgs: true} );
 
+
 module.exports = {
 	songs: {
 		get: function (req, res) {
